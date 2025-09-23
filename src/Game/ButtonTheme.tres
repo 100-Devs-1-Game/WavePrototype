@@ -1,0 +1,17 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dsriwp3xq62s8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sylye"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chyft"]
+bg_color = Color(0.15333, 0.172434, 0.375637, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipd3k"]
+bg_color = Color(0, 0, 0, 1)
+
+[resource]
+default_font_size = 13
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/styles/disabled = SubResource("StyleBoxFlat_sylye")
+Button/styles/hover = SubResource("StyleBoxFlat_chyft")
+Button/styles/normal = SubResource("StyleBoxFlat_ipd3k")

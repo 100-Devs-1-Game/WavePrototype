@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqxs1t7qdqljs"]
+
+[ext_resource type="Script" uid="uid://c05wavyyqv3tg" path="res://Scuba/Scuba.gd" id="1_o5d3n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u714p"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_7ruom"]
+size = Vector2(16, 16)
+
+[node name="Scuba" type="CharacterBody2D"]
+script = ExtResource("1_o5d3n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_u714p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("PlaceholderTexture2D_7ruom")

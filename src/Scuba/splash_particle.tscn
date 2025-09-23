@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://co61ocpbs10ru"]
+
+[ext_resource type="Texture2D" uid="uid://6bx3heuncjd0" path="res://Splash/splashparticle.png" id="1_6xcpx"]
+
+[node name="SplashParticle" type="CPUParticles2D"]
+amount = 10
+texture = ExtResource("1_6xcpx")
+one_shot = true
+explosiveness = 1.0
+randomness = 0.34
+direction = Vector2(0, -1)
+spread = 75.0
+gravity = Vector2(0, 100)
+initial_velocity_min = 23.0
+initial_velocity_max = 50.0

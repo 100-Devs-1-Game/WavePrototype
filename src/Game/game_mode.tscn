@@ -1,0 +1,165 @@
+[gd_scene load_steps=11 format=3 uid="uid://b1e61prvvbfsu"]
+
+[ext_resource type="PackedScene" uid="uid://bemjkyfmkelmd" path="res://Ocean/ocean.tscn" id="1_4w06o"]
+[ext_resource type="Script" uid="uid://l7dp4wo806mh" path="res://Game/game_mode.gd" id="1_34rqk"]
+[ext_resource type="Theme" uid="uid://dsriwp3xq62s8" path="res://Game/ButtonTheme.tres" id="4_p3h2i"]
+[ext_resource type="Script" uid="uid://dpn3xyccvel6y" path="res://Spawner/Spawner_of_things.gd" id="4_s4d64"]
+[ext_resource type="Script" uid="uid://urdp2hqgwvn4" path="res://WaveMaker/WaveMaker.gd" id="5_s4d64"]
+[ext_resource type="Script" uid="uid://byd800euerxci" path="res://Intro/Intro.gd" id="6_xj34o"]
+[ext_resource type="Script" uid="uid://dfrv5ii44l7oq" path="res://Score/ScoreAndCombo.gd" id="7_ofllg"]
+
+[sub_resource type="Animation" id="Animation_ofllg"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera2D:enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 300), Vector2(300, 300)]
+}
+
+[sub_resource type="Animation" id="Animation_xj34o"]
+resource_name = "intro"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera2D:enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(300, 300)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mk7db"]
+_data = {
+&"RESET": SubResource("Animation_ofllg"),
+&"intro": SubResource("Animation_xj34o")
+}
+
+[node name="GameMode" type="Node" node_paths=PackedStringArray("water")]
+script = ExtResource("1_34rqk")
+water = NodePath("Water")
+
+[node name="Water" parent="." instance=ExtResource("1_4w06o")]
+
+[node name="DebugControl" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DebugControl"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="waveLeft" type="Button" parent="DebugControl/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_p3h2i")
+text = "Wave Left"
+
+[node name="waveRight" type="Button" parent="DebugControl/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_p3h2i")
+text = "Wave Right"
+
+[node name="wobble" type="Button" parent="DebugControl/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_p3h2i")
+text = "Wobble"
+
+[node name="noise" type="Button" parent="DebugControl/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_p3h2i")
+text = "Noise"
+
+[node name="randomPit" type="Button" parent="DebugControl/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_p3h2i")
+text = "Pit"
+
+[node name="spawn_crate" type="Button" parent="DebugControl/HBoxContainer"]
+layout_mode = 2
+text = "Crate"
+
+[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("water", "game_mode", "score_tracker")]
+script = ExtResource("4_s4d64")
+water = NodePath("../Water")
+game_mode = NodePath("..")
+score_tracker = NodePath("../ScoreAndCombo")
+
+[node name="WaveMaker" type="Node" parent="." node_paths=PackedStringArray("water", "game_mode")]
+script = ExtResource("5_s4d64")
+water = NodePath("../Water")
+game_mode = NodePath("..")
+
+[node name="Intro" type="Node" parent="." node_paths=PackedStringArray("water", "game_mode", "spawner")]
+script = ExtResource("6_xj34o")
+water = NodePath("../Water")
+game_mode = NodePath("..")
+spawner = NodePath("../Spawner")
+
+[node name="Camera2D" type="Camera2D" parent="Intro"]
+position = Vector2(0, 300)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Intro"]
+libraries = {
+&"": SubResource("AnimationLibrary_mk7db")
+}
+autoplay = "intro"
+
+[node name="ScoreAndCombo" type="CanvasLayer" parent="."]
+script = ExtResource("7_ofllg")
+
+[node name="Score" type="Label" parent="ScoreAndCombo"]
+offset_left = 289.0
+offset_top = 77.0
+offset_right = 329.0
+offset_bottom = 100.0
+
+[node name="ComboCounter" type="Label" parent="ScoreAndCombo"]
+offset_left = 283.0
+offset_top = 130.0
+offset_right = 323.0
+offset_bottom = 153.0
+uppercase = true
+
+[node name="ComboConfetti" type="Label" parent="ScoreAndCombo"]
+offset_left = 126.0
+offset_right = 166.0
+offset_bottom = 23.0
+
+[connection signal="pressed" from="DebugControl/HBoxContainer/waveLeft" to="." method="_on_wave_left_pressed"]
+[connection signal="pressed" from="DebugControl/HBoxContainer/waveRight" to="." method="_on_wave_right_pressed"]
+[connection signal="pressed" from="DebugControl/HBoxContainer/wobble" to="." method="_on_wobble_pressed"]
+[connection signal="pressed" from="DebugControl/HBoxContainer/noise" to="." method="_on_noise_pressed"]
+[connection signal="pressed" from="DebugControl/HBoxContainer/randomPit" to="." method="_on_random_pit_pressed"]
+[connection signal="pressed" from="DebugControl/HBoxContainer/spawn_crate" to="Spawner" method="_on_spawn_crate_pressed"]
+[connection signal="animation_finished" from="Intro/AnimationPlayer" to="Intro" method="_on_animation_player_animation_finished"]

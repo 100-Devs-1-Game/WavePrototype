@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://oypsbt6w80ac"]
+
+[ext_resource type="Script" uid="uid://glesy3jy5qou" path="res://JetSki/JetSki2.gd" id="1_6opbb"]
+[ext_resource type="Script" uid="uid://cqal18qt5bv34" path="res://Crate/object_bounce.gd" id="2_l336i"]
+[ext_resource type="Script" uid="uid://dav8h534u8npy" path="res://Game/keep_in_bounds.gd" id="3_qse17"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lptlp"]
+size = Vector2(8, 8)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_6opbb"]
+size = Vector2(8, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6opbb"]
+size = Vector2(10, 10)
+
+[node name="Crate" type="CharacterBody2D" node_paths=PackedStringArray("debug_label", "debug_label2")]
+motion_mode = 1
+script = ExtResource("1_6opbb")
+debug_label = NodePath("DebugLabel")
+debug_label2 = NodePath("DebugLabel2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_lptlp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("PlaceholderTexture2D_6opbb")
+
+[node name="DebugLabel" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DebugLabel2" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="BouncingArea" type="Area2D" parent="."]
+collision_mask = 3
+script = ExtResource("2_l336i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BouncingArea"]
+shape = SubResource("RectangleShape2D_6opbb")
+
+[node name="BoundsRestraint" type="Node" parent="."]
+script = ExtResource("3_qse17")
+
+[connection signal="area_entered" from="BouncingArea" to="BouncingArea" method="_on_area_entered"]

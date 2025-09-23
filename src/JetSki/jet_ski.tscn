@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://dpsx7j6o36mjs"]
+
+[ext_resource type="Script" uid="uid://glesy3jy5qou" path="res://JetSki/JetSki2.gd" id="1_rxwpa"]
+[ext_resource type="Texture2D" uid="uid://bnqbdg6ltn8d2" path="res://JetSki/boat2.png" id="2_b1sxo"]
+[ext_resource type="Script" uid="uid://ckes1k3jqqslj" path="res://JetSki/JetSkiContoller.gd" id="3_408b3"]
+[ext_resource type="Script" uid="uid://dp168hiipfxy3" path="res://JetSki/player_bounce.gd" id="4_c0wh0"]
+[ext_resource type="Script" uid="uid://dav8h534u8npy" path="res://Game/keep_in_bounds.gd" id="5_t5kxg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rxwpa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_408b3"]
+radius = 12.0
+
+[node name="JetSki" type="CharacterBody2D" node_paths=PackedStringArray("debug_label", "debug_label2")]
+motion_mode = 1
+script = ExtResource("1_rxwpa")
+debug_label = NodePath("DebugLabel")
+debug_label2 = NodePath("DebugLabel2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_b1sxo")
+offset = Vector2(0, -5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rxwpa")
+
+[node name="DebugLabel" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+text = "dw"
+
+[node name="DebugLabel2" type="Label" parent="."]
+visible = false
+offset_top = 22.0
+offset_right = 40.0
+offset_bottom = 45.0
+text = "dw"
+
+[node name="Controller" type="Node" parent="." node_paths=PackedStringArray("vehicle")]
+script = ExtResource("3_408b3")
+vehicle = NodePath("..")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_left = 0
+limit_right = 1000
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_top_margin = 0.5
+drag_bottom_margin = 0.5
+
+[node name="BounceArea" type="Area2D" parent="."]
+collision_layer = 2
+script = ExtResource("4_c0wh0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BounceArea"]
+shape = SubResource("CircleShape2D_408b3")
+
+[node name="BoundsRestraint" type="Node" parent="."]
+script = ExtResource("5_t5kxg")
