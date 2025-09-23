@@ -55,17 +55,22 @@ func _physics_process(delta: float) -> void:
 		input_vector.x -= 1
 	if Input.is_action_pressed("move_right"):
 		input_vector.x += 1
-	if Input.is_action_pressed("move_up"):
-		input_vector.y -= 1
-	if Input.is_action_pressed("move_down"):
-		input_vector.y += 1
+	# Soaring
+	vehicle.soaring = Input.is_action_pressed("hover") and vehicle.was_above_water		
+		
+	#if Input.is_action_pressed("move_up"):
+		#input_vector.y -= 1
+	#if Input.is_action_pressed("move_down"):
+		#input_vector.y += 1
 
+		
+		#don't use this for anything yet
 	if Input.is_action_just_pressed("interact"):
 		interacting.emit()
 
 	input_vector = input_vector.normalized()
 
-	# --- Apply horizontal thrust ---
+	# --- horizontal ---
 	if input_vector.x != 0:
 		vehicle.velocity.x += input_vector.x * acceleration * delta
 	else:
