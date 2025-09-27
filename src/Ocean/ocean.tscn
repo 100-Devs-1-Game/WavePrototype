@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://d1usafsv3n5mh" path="res://Ocean/Water.gd" id="1_wq5em"]
 
 [node name="Water" type="Node2D"]
-z_index = 1
 script = ExtResource("1_wq5em")
+surface_color = Color(0.301961, 0.6, 1, 0.619608)
+deep_color = Color(0.101961, 0.301961, 0.6, 0.627451)
 
 [node name="Line2D" type="Line2D" parent="."]
 z_index = 2
-width = 8.0
+width = 7.0

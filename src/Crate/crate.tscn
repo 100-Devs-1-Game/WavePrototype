@@ -12,15 +12,18 @@ size = Vector2(8, 8)
 radius = 36.0139
 
 [node name="Crate" type="CharacterBody2D" node_paths=PackedStringArray("debug_label", "debug_label2")]
+scale = Vector2(0.5, 0.5)
 motion_mode = 1
 script = ExtResource("1_6opbb")
 debug_label = NodePath("DebugLabel")
 debug_label2 = NodePath("DebugLabel2")
+gravity = 1500.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_lptlp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
 position = Vector2(-34, 5)
 texture = ExtResource("2_somao")
 

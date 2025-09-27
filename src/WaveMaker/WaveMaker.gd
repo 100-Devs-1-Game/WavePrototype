@@ -4,12 +4,13 @@ class_name WaveMaker
 @export var water: Water
 @export var game_mode : GameMode
 
-var counter : float = 1
+var counter : float = 5
 var time_tracker : float = 0
 func _process(delta: float) -> void:
 		time_tracker += delta
 		if time_tracker > counter:
 			time_tracker = 0
+			counter = randf_range(4,10)
 			call_one()		
 
 func call_one():

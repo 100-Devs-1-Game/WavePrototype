@@ -8,7 +8,7 @@ class_name Water
 # Tunable parameters
 # ----------------------
 @export var width: float = 5024.0      # total width of water surface
-@export var samples: int = 50         # number of points in the surface (>= 2)
+@export var samples: int = 500         # number of points in the surface (>= 2)
 @export var base_y: float = 400.0      # calm water level
 @export var spring_k: float = 40.0     # spring stiffness for displacement
 @export var spring_damping: float = 6.0

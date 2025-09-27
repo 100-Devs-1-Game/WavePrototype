@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3moieuwwnb2c"]
+
+[ext_resource type="Script" uid="uid://ch186ud7ltug4" path="res://SeaWeedFloor/SeaweedSpawner.gd" id="1_4khgt"]
+
+[node name="SeaweedFloorSpawner" type="Node"]
+script = ExtResource("1_4khgt")

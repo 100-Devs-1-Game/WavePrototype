@@ -1,15 +1,43 @@
-[gd_scene load_steps=2 format=3 uid="uid://co61ocpbs10ru"]
+[gd_scene load_steps=3 format=3 uid="uid://co61ocpbs10ru"]
 
-[ext_resource type="Texture2D" uid="uid://6bx3heuncjd0" path="res://Splash/splashparticle.png" id="1_6xcpx"]
+[ext_resource type="Texture2D" uid="uid://dgqf5wx0xjvo" path="res://assets/splash.png" id="1_6xcpx"]
+[ext_resource type="Script" uid="uid://mn1warcs8yq3" path="res://Splash/splashemittercontroller.gd" id="1_no21p"]
 
-[node name="SplashParticle" type="CPUParticles2D"]
-amount = 10
+[node name="SplashNode" type="Node2D"]
+script = ExtResource("1_no21p")
+
+[node name="Front" type="CPUParticles2D" parent="."]
+z_index = 2
+emitting = false
+amount = 3
 texture = ExtResource("1_6xcpx")
 one_shot = true
 explosiveness = 1.0
 randomness = 0.34
+emission_shape = 1
+emission_sphere_radius = 10.0
 direction = Vector2(0, -1)
 spread = 75.0
-gravity = Vector2(0, 100)
-initial_velocity_min = 23.0
-initial_velocity_max = 50.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 150.0
+initial_velocity_max = 200.0
+scale_amount_min = 0.25
+scale_amount_max = 0.75
+
+[node name="Back" type="CPUParticles2D" parent="."]
+z_index = -2
+emitting = false
+amount = 3
+texture = ExtResource("1_6xcpx")
+one_shot = true
+explosiveness = 1.0
+randomness = 0.34
+emission_shape = 1
+emission_sphere_radius = 10.0
+direction = Vector2(0, -1)
+spread = 75.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 150.0
+initial_velocity_max = 200.0
+scale_amount_min = 0.25
+scale_amount_max = 0.75
