@@ -4,6 +4,5 @@
 [ext_resource type="Texture2D" uid="uid://djn5kcoox2kg3" path="res://assets/explosion.png" id="1_pim3w"]
 
 [node name="Explosion" type="Sprite2D"]
-scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_pim3w")
 script = ExtResource("1_echoh")

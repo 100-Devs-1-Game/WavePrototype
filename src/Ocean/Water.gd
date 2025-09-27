@@ -1,15 +1,28 @@
-extends Node2D
+extends Node
+# ----------------------
+# Alternative: Use vertex colors for gradient (more reliable)
+# ----------------------extends Node2D
 class_name Water
 
 # ----------------------
 # Tunable parameters
 # ----------------------
-@export var width: float = 1024.0      # total width of water surface
-@export var samples: int = 500         # number of points in the surface (>= 2)
+@export var width: float = 5024.0      # total width of water surface
+@export var samples: int = 50         # number of points in the surface (>= 2)
 @export var base_y: float = 400.0      # calm water level
 @export var spring_k: float = 40.0     # spring stiffness for displacement
 @export var spring_damping: float = 6.0
 @export var coupling: float = 8.0      # neighbor coupling constant
+
+# Water appearance
+@export var water_depth: float = 500.0  # how deep to render the water
+@export var surface_color: Color = Color(0.3, 0.6, 1.0, 0.8)  # light blue, semi-transparent
+@export var deep_color: Color = Color(0.1, 0.3, 0.6, 0.9)     # darker blue, more opaque
+
+# Surface line appearance
+@export var show_surface_line: bool = true
+@export var surface_line_width: float = 3.0
+@export var surface_line_color: Color = Color(0.8, 0.9, 1.0, 1.0)  # bright water surface
 
 # sine waves for base motion
 var sines := [
@@ -25,6 +38,10 @@ var positions_x: Array = []
 var displacements: Array = []
 var velocities: Array = []
 var elapsed_time: float = 0.0
+
+# For rendering
+var water_polygon: Polygon2D
+var surface_line: Line2D
 
 # ----------------------
 # Setup
@@ -42,6 +59,44 @@ func _ready() -> void:
 		positions_x[i] = i * dx
 		displacements[i] = 0.0
 		velocities[i] = 0.0
+	
+	# Create the water body polygon
+	_setup_water_polygon()
+	
+	# Create the surface line
+	_setup_surface_line()
+
+# ----------------------
+# Setup water polygon for gradient fill
+# ----------------------
+func _setup_water_polygon() -> void:
+	water_polygon = Polygon2D.new()
+	add_child(water_polygon)
+	
+	# Create gradient from surface to depth
+	var gradient = Gradient.new()
+	#gradient.clear()  # Clear any default points
+	gradient.add_point(0.0, surface_color)  # Surface color at top
+	gradient.add_point(1.0, deep_color)     # Deep color at bottom
+	
+	# Force gradient to update
+	gradient.interpolation_mode = Gradient.GRADIENT_INTERPOLATE_LINEAR
+	
+	var gradient_texture = GradientTexture2D.new()
+	gradient_texture.gradient = gradient
+	gradient_texture.width = 256
+	gradient_texture.height = 256
+	gradient_texture.fill_from = Vector2(0.0, 0.0)  # Start from top
+	gradient_texture.fill_to = Vector2(0.0, 1.0)    # End at bottom
+	gradient_texture.fill = GradientTexture2D.FILL_LINEAR
+	
+	# Force the texture to generate
+	await gradient_texture.changed
+	
+	water_polygon.texture = gradient_texture
+	
+	# Alternative: Use vertex colors instead of texture
+	_use_vertex_colors()
 
 # ----------------------
 # Update
@@ -49,8 +104,107 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	elapsed_time += delta
 	_update_springs(delta)
-	_update_mesh()
+	_update_water_polygon()
+	_update_surface_line()
 	_update_traveling_waves(delta)
+
+# ----------------------
+# Setup surface line
+# ----------------------
+func _setup_surface_line() -> void:
+	if not show_surface_line:
+		return
+		
+	surface_line = Line2D.new()
+	surface_line.width = surface_line_width
+	surface_line.default_color = surface_line_color
+	surface_line.joint_mode = Line2D.LINE_JOINT_ROUND
+	surface_line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	add_child(surface_line)
+
+# ----------------------
+# Update surface line
+# ----------------------
+func _update_surface_line() -> void:
+	if not show_surface_line or not surface_line:
+		return
+		
+	surface_line.clear_points()
+	for i in range(samples):
+		var h = _analytic_base_height(positions_x[i], elapsed_time) + displacements[i]
+		surface_line.add_point(Vector2(positions_x[i], h))
+# ----------------------
+func _use_vertex_colors() -> void:
+	# Don't use texture, use vertex colors instead
+	water_polygon.texture = null
+	water_polygon.vertex_colors = PackedColorArray()
+
+# ----------------------
+# Update water polygon shape
+# ----------------------
+func _update_water_polygon() -> void:
+	var points: PackedVector2Array = PackedVector2Array()
+	var colors: PackedColorArray = PackedColorArray()
+	
+	# Find min and max Y for gradient calculation
+	var min_y = INF
+	var max_y = base_y + water_depth
+	
+	# First pass: find the actual min Y from surface points
+	for i in range(samples):
+		var h = _analytic_base_height(positions_x[i], elapsed_time) + displacements[i]
+		if h < min_y:
+			min_y = h
+	
+	# Add surface points (from left to right)
+	for i in range(samples):
+		var h = _analytic_base_height(positions_x[i], elapsed_time) + displacements[i]
+		points.append(Vector2(positions_x[i], h))
+		
+		# Calculate gradient factor for this surface point
+		var gradient_factor = (h - min_y) / (max_y - min_y)
+		gradient_factor = clamp(gradient_factor, 0.0, 1.0)
+		var color = surface_color.lerp(deep_color, gradient_factor)
+		colors.append(color)
+	
+	# Add bottom points (from right to left to close the polygon)
+	var bottom_y = base_y + water_depth
+	points.append(Vector2(width, bottom_y))  # Bottom right
+	colors.append(deep_color)  # Deep color at bottom
+	
+	points.append(Vector2(0, bottom_y))      # Bottom left  
+	colors.append(deep_color)  # Deep color at bottom
+	
+	water_polygon.polygon = points
+	water_polygon.vertex_colors = colors
+
+# ----------------------
+# Update texture coordinates for proper gradient mapping
+# ----------------------
+func _update_texture_coordinates() -> void:
+	if not water_polygon:
+		return
+		
+	var points = water_polygon.polygon
+	var uvs: PackedVector2Array = PackedVector2Array()
+	
+	# Find the highest and lowest Y values for proper UV mapping
+	var min_y = INF
+	var max_y = -INF
+	
+	for point in points:
+		if point.y < min_y:
+			min_y = point.y
+		if point.y > max_y:
+			max_y = point.y
+	
+	# Create UV coordinates that map the gradient vertically
+	for point in points:
+		var u = point.x / width  # Horizontal UV (0 to 1 across width)
+		var v = (point.y - min_y) / (max_y - min_y)  # Vertical UV (0 at surface, 1 at bottom)
+		uvs.append(Vector2(u, v))
+	
+	water_polygon.uv = uvs
 
 # ----------------------
 # Wave Simulation
@@ -140,6 +294,31 @@ func add_wind_noise(strength: float = 5.0) -> void:
 func set_base_height(new_base: float) -> void:
 	base_y = new_base
 
+# ----------------------
+# Color control functions
+# ----------------------
+func set_water_colors(new_surface_color: Color, new_deep_color: Color) -> void:
+	surface_color = new_surface_color
+	deep_color = new_deep_color
+	# Colors will be updated on next frame via _update_water_polygon()
+
+# ----------------------
+# Control surface line visibility and appearance
+# ----------------------
+func set_surface_line_visible(visible: bool) -> void:
+	show_surface_line = visible
+	if surface_line:
+		surface_line.visible = visible
+
+func set_surface_line_color(color: Color) -> void:
+	surface_line_color = color
+	if surface_line:
+		surface_line.default_color = color
+
+func set_surface_line_width(width: float) -> void:
+	surface_line_width = width
+	if surface_line:
+		surface_line.width = width
 
 # ----------------------
 # Traveling Wave Data
@@ -187,15 +366,3 @@ func _update_traveling_waves(delta: float) -> void:
 	# Remove waves that have fully left the water
 	traveling_waves = traveling_waves.filter(func(w):
 		return w.x + w.width >= 0 and w.x - w.width <= width)
-
-
-# ----------------------
-# Rendering
-# ----------------------
-func _update_mesh() -> void:
-	if has_node("Line2D"):
-		var line := $Line2D
-		line.clear_points()
-		for i in range(samples):
-			var h = _analytic_base_height(positions_x[i], elapsed_time) + displacements[i]
-			line.add_point(Vector2(positions_x[i], h))

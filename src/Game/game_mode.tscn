@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b1e61prvvbfsu"]
+[gd_scene load_steps=14 format=3 uid="uid://b1e61prvvbfsu"]
 
 [ext_resource type="PackedScene" uid="uid://bemjkyfmkelmd" path="res://Ocean/ocean.tscn" id="1_4w06o"]
 [ext_resource type="Script" uid="uid://l7dp4wo806mh" path="res://Game/game_mode.gd" id="1_34rqk"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://urdp2hqgwvn4" path="res://WaveMaker/WaveMaker.gd" id="5_s4d64"]
 [ext_resource type="Script" uid="uid://byd800euerxci" path="res://Intro/Intro.gd" id="6_xj34o"]
 [ext_resource type="Script" uid="uid://dfrv5ii44l7oq" path="res://Score/ScoreAndCombo.gd" id="7_ofllg"]
+[ext_resource type="FontFile" uid="uid://bn2nyqu6y1mxc" path="res://assets/Chewy-Regular.ttf" id="8_i4xgj"]
 [ext_resource type="Texture2D" uid="uid://c5nel6y6bjemg" path="res://assets/sun.png" id="8_mk7db"]
 
 [sub_resource type="Animation" id="Animation_ofllg"]
@@ -69,11 +70,18 @@ _data = {
 &"intro": SubResource("Animation_xj34o")
 }
 
+[sub_resource type="Theme" id="Theme_nnm2n"]
+Label/fonts/font = ExtResource("8_i4xgj")
+
 [node name="GameMode" type="Node" node_paths=PackedStringArray("water")]
 script = ExtResource("1_34rqk")
 water = NodePath("Water")
 
 [node name="Water" parent="." instance=ExtResource("1_4w06o")]
+base_y = 0.0
+water_depth = 800.0
+surface_line_width = 20.0
+surface_line_color = Color(1, 1, 1, 1)
 
 [node name="DebugControl" type="CanvasLayer" parent="."]
 
@@ -144,6 +152,7 @@ offset_left = 289.0
 offset_top = 77.0
 offset_right = 329.0
 offset_bottom = 100.0
+theme = SubResource("Theme_nnm2n")
 
 [node name="ComboCounter" type="Label" parent="ScoreAndCombo"]
 offset_left = 283.0
@@ -158,8 +167,7 @@ offset_right = 166.0
 offset_bottom = 23.0
 
 [node name="SunSprite" type="Sprite2D" parent="."]
-position = Vector2(276, 206)
-scale = Vector2(0.1, 0.1)
+position = Vector2(372, -669)
 texture = ExtResource("8_mk7db")
 
 [connection signal="pressed" from="DebugControl/HBoxContainer/waveLeft" to="." method="_on_wave_left_pressed"]

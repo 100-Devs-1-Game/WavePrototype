@@ -3,7 +3,9 @@
 [ext_resource type="Script" uid="uid://d1usafsv3n5mh" path="res://Ocean/Water.gd" id="1_wq5em"]
 
 [node name="Water" type="Node2D"]
+z_index = 1
 script = ExtResource("1_wq5em")
 
 [node name="Line2D" type="Line2D" parent="."]
-width = 1.0
+z_index = 2
+width = 8.0

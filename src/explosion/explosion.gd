@@ -5,7 +5,7 @@ func _ready() -> void:
 	var tween := create_tween()
 	
 	scale = Vector2(0.1, 0.1)
-	tween.tween_property(self, "scale", Vector2(0.3, 0.3), 0.3) \
+	tween.tween_property(self, "scale", Vector2(1, 1), 0.3) \
 		.set_trans(Tween.TRANS_BACK) \
 		.set_ease(Tween.EASE_OUT)
 	
