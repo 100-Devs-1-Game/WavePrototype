@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dpsx7j6o36mjs"]
 
 [ext_resource type="Script" uid="uid://glesy3jy5qou" path="res://JetSki/JetSki2.gd" id="1_rxwpa"]
-[ext_resource type="Texture2D" uid="uid://bnqbdg6ltn8d2" path="res://JetSki/boat2.png" id="2_b1sxo"]
+[ext_resource type="Texture2D" uid="uid://ibpwd4rvl72n" path="res://assets/boat_flag.png" id="2_t5kxg"]
 [ext_resource type="Script" uid="uid://ckes1k3jqqslj" path="res://JetSki/JetSkiContoller.gd" id="3_408b3"]
 [ext_resource type="Script" uid="uid://dp168hiipfxy3" path="res://JetSki/player_bounce.gd" id="4_c0wh0"]
 [ext_resource type="Script" uid="uid://dav8h534u8npy" path="res://Game/keep_in_bounds.gd" id="5_t5kxg"]
@@ -18,8 +18,9 @@ debug_label = NodePath("DebugLabel")
 debug_label2 = NodePath("DebugLabel2")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_b1sxo")
-offset = Vector2(0, -5)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_t5kxg")
+offset = Vector2(0, -25)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_rxwpa")

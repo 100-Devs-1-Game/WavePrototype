@@ -2,12 +2,10 @@
 
 [ext_resource type="Script" uid="uid://glesy3jy5qou" path="res://JetSki/JetSki2.gd" id="1_6opbb"]
 [ext_resource type="Script" uid="uid://cqal18qt5bv34" path="res://Crate/object_bounce.gd" id="2_l336i"]
+[ext_resource type="Texture2D" uid="uid://raapry5d24xd" path="res://assets/bomb.png" id="2_somao"]
 [ext_resource type="Script" uid="uid://dav8h534u8npy" path="res://Game/keep_in_bounds.gd" id="3_qse17"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lptlp"]
-size = Vector2(8, 8)
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_6opbb"]
 size = Vector2(8, 8)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6opbb"]
@@ -23,7 +21,9 @@ debug_label2 = NodePath("DebugLabel2")
 shape = SubResource("RectangleShape2D_lptlp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("PlaceholderTexture2D_6opbb")
+position = Vector2(-7, 1)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_somao")
 
 [node name="DebugLabel" type="Label" parent="."]
 visible = false

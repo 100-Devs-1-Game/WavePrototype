@@ -34,7 +34,9 @@ func _trigger_splash(pos: Vector2, size: float) -> void:
 	splash.global_position = pos
 	splash.scale = Vector2.ONE
 	get_tree().current_scene.add_child(splash)
-	#splash with handle queue_free... maybe this should be a dic and have gamemanager delete em when chaing scenes
+	
+
+	# splash with handle queue_free... maybe this should be a dic and have gamemanager delete em when chaing scenes
 
 func _ready() -> void:
 	if water_path == null:

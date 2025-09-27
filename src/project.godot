@@ -21,7 +21,6 @@ window/size/viewport_width=576
 window/size/viewport_height=324
 window/size/resizable=false
 window/size/borderless=true
-window/size/transparent=true
 window/size/window_width_override=1296
 window/size/window_height_override=1095
 window/stretch/mode="viewport"
@@ -72,5 +71,6 @@ hover={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.65985, 0.799228, 0.986923, 1)
 2d/snap/snap_2d_transforms_to_pixel=true
 2d/snap/snap_2d_vertices_to_pixel=true

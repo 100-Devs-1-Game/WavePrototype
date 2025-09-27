@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b1e61prvvbfsu"]
+[gd_scene load_steps=12 format=3 uid="uid://b1e61prvvbfsu"]
 
 [ext_resource type="PackedScene" uid="uid://bemjkyfmkelmd" path="res://Ocean/ocean.tscn" id="1_4w06o"]
 [ext_resource type="Script" uid="uid://l7dp4wo806mh" path="res://Game/game_mode.gd" id="1_34rqk"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://urdp2hqgwvn4" path="res://WaveMaker/WaveMaker.gd" id="5_s4d64"]
 [ext_resource type="Script" uid="uid://byd800euerxci" path="res://Intro/Intro.gd" id="6_xj34o"]
 [ext_resource type="Script" uid="uid://dfrv5ii44l7oq" path="res://Score/ScoreAndCombo.gd" id="7_ofllg"]
+[ext_resource type="Texture2D" uid="uid://c5nel6y6bjemg" path="res://assets/sun.png" id="8_mk7db"]
 
 [sub_resource type="Animation" id="Animation_ofllg"]
 tracks/0/type = "value"
@@ -155,6 +156,11 @@ uppercase = true
 offset_left = 126.0
 offset_right = 166.0
 offset_bottom = 23.0
+
+[node name="SunSprite" type="Sprite2D" parent="."]
+position = Vector2(276, 206)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("8_mk7db")
 
 [connection signal="pressed" from="DebugControl/HBoxContainer/waveLeft" to="." method="_on_wave_left_pressed"]
 [connection signal="pressed" from="DebugControl/HBoxContainer/waveRight" to="." method="_on_wave_right_pressed"]
