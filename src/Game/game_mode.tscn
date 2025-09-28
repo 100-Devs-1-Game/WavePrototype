@@ -77,7 +77,7 @@ water = NodePath("Water")
 
 [node name="Water" parent="." instance=ExtResource("1_4w06o")]
 base_y = 0.0
-surface_line_width = 20.0
+surface_line_width = 8.0
 surface_line_color = Color(1, 1, 1, 1)
 
 [node name="DebugControl" type="CanvasLayer" parent="."]
@@ -117,6 +117,7 @@ text = "Crate"
 
 [node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("water", "game_mode", "score_tracker")]
 script = ExtResource("4_s4d64")
+debug = true
 water = NodePath("../Water")
 game_mode = NodePath("..")
 score_tracker = NodePath("../ScoreAndCombo")

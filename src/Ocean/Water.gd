@@ -21,10 +21,11 @@ class_name Water
 
 # Surface line appearance
 @export var show_surface_line: bool = true
-@export var surface_line_width: float = 3.0
+@export var surface_line_width: float = 2.0
 @export var surface_line_color: Color = Color(0.8, 0.9, 1.0, 1.0)  # bright water surface
 
-# sine waves for base motion
+# sine waves for base motion  
+# make into a Saw?
 var sines := [
 	{"A": 8.0,  "k": 0.004, "omega": 1.5, "phase": 0.0},
 	{"A": 3.5,  "k": 0.020, "omega": 3.8, "phase": 1.0},
@@ -65,6 +66,7 @@ func _ready() -> void:
 	
 	# Create the surface line
 	_setup_surface_line()
+	set_surface_line_width(surface_line_width)
 
 # ----------------------
 # Setup water polygon for gradient fill

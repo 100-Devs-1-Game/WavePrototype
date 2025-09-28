@@ -40,14 +40,15 @@ func _on_area_entered(area: Area2D) -> void:
 			area.bounce()
 			velocity_holder.velocity = Vector2.ZERO
 			velocity_holder.velocity.y += 150
-			broken.emit(points)
+
 			life -= 1
 			if life <= 0 :
 				var explosion = preload("res://explosion/explosion.tscn").instantiate()
 				explosion.global_position = velocity_holder.global_position
 				get_tree().current_scene.add_child(explosion)
+				broken.emit(points)
 				velocity_holder.queue_free()
-			else: #do effect
+			else: #do hit effect
 				pass
 			return
 

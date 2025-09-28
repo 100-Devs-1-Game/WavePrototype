@@ -5,7 +5,8 @@ class_name VehicleController
 @export var acceleration: float = 200.0
 @export var max_speed: float = 100.0
 @export var dive_impulse: float = 400.0
-@export var max_boost : float = 450
+@export var max_boost : float = 1600
+
 
 signal interacting()
 
