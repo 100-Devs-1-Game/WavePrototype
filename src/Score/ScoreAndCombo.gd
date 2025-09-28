@@ -6,7 +6,9 @@ class_name ScoreTracker
 @onready var score_label : Label = $Score
 @onready var combo_counter_label : Label = $ComboCounter
 @onready var combo_confetti_label : Label = $ComboConfetti
-
+@onready var height_label : Label = $Height
+@onready var highest_height_label : Label = $Highest_Height
+var highest_height : float = 0
 var current_score : int = 0
 var combo_tracker_score : int = 0
 
@@ -15,7 +17,20 @@ var combo_tracker_score : int = 0
 @export var combo_pulse_scale: float = 1.4
 @export var confetti_messages: Array[String] = ["NICE!", "COMBO!", "AWESOME!", "AMAZING!", "INCREDIBLE!"]
 
+func _process(delta: float) -> void:
+	var current_height = abs(vehicle.global_position.y)
+	var result = "%.1f" % current_height
+	if current_height > highest_height:
+		highest_height = current_height
+		var height_result = "%.1f" % highest_height
+		highest_height_label.text = str(height_result)
+		
+	height_label.text = str(result)
+	
+	
 func update_score(points_to_add : int):
+	var current_height = abs(vehicle.global_position.y)
+	height_label.text = str(current_height)
 	var final_points = points_to_add
 	
 	if combo_tracker_score > 0:

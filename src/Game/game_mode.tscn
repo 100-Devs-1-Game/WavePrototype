@@ -151,33 +151,52 @@ autoplay = "intro"
 script = ExtResource("7_ofllg")
 
 [node name="Score" type="Label" parent="ScoreAndCombo"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -32.0
-offset_right = 32.0
-offset_bottom = 42.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 32.0
+offset_bottom = 115.0
 grow_horizontal = 2
 theme = ExtResource("8_i4xgj")
-text = "3232"
+horizontal_alignment = 1
 
 [node name="ComboCounter" type="Label" parent="ScoreAndCombo"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_top = 100.0
-offset_right = 20.0
-offset_bottom = 123.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 120.0
+offset_bottom = 203.0
 grow_horizontal = 2
 theme = ExtResource("8_i4xgj")
 text = "4343"
+horizontal_alignment = 1
 uppercase = true
 
 [node name="ComboConfetti" type="Label" parent="ScoreAndCombo"]
 offset_left = 126.0
 offset_right = 166.0
 offset_bottom = 23.0
+
+[node name="Height" type="Label" parent="ScoreAndCombo"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -83.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_i4xgj")
+horizontal_alignment = 1
+
+[node name="Highest_Height" type="Label" parent="ScoreAndCombo"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -178.0
+offset_bottom = -95.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_i4xgj")
+horizontal_alignment = 1
 
 [node name="SunSprite" type="Sprite2D" parent="."]
 z_index = -8

@@ -19,6 +19,8 @@ func spawn_boat():
 	temp_vehicle.global_position = Vector2(1000,0)
 	temp_vehicle.get_node("BounceArea").bouncing.connect(Callable(score_tracker, "update_combo"))
 	temp_vehicle.reset_timer.connect(Callable(score_tracker, "reset_combo"))
+	score_tracker.vehicle = temp_vehicle
+	score_tracker.vehicle_controller = temp_vehicle.get_node("Controller")
 	
 func spawn_crate():
 	var temp_crate = crate.instantiate()
