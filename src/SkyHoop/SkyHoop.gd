@@ -3,9 +3,14 @@ extends Node2D
 signal broken(point_value : int)
 @export var life : int = 1
 @export var points : int = 100
+@export var animsprite : AnimatedSprite2D
+
+func _ready() -> void:
+	animsprite.play("flap")
 
 func _on_sky_detector_area_entered(area: Area2D) -> void:
 	broken.emit(points)
+	animsprite.play("hit")
 	
 	# Add a squish mostly horizontal stretch and shrink before queue_freeing
 	await squish_and_break()

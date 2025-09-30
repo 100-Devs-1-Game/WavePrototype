@@ -12,6 +12,7 @@ class_name Spawner
 @export var crate : PackedScene = preload("res://Crate/crate.tscn")
 @export var sky_hoop : PackedScene = preload("res://SkyHoop/sky_hoop.tscn")
 
+
 func spawn_boat():
 	var temp_vehicle = vehicle.instantiate()
 	temp_vehicle.water_path = water

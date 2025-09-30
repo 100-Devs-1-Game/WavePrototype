@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b1e61prvvbfsu"]
+[gd_scene load_steps=16 format=3 uid="uid://b1e61prvvbfsu"]
 
 [ext_resource type="PackedScene" uid="uid://bemjkyfmkelmd" path="res://Ocean/ocean.tscn" id="1_4w06o"]
 [ext_resource type="Script" uid="uid://l7dp4wo806mh" path="res://Game/game_mode.gd" id="1_34rqk"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://dfrv5ii44l7oq" path="res://Score/ScoreAndCombo.gd" id="7_ofllg"]
 [ext_resource type="Theme" uid="uid://durnxvl8gis2i" path="res://Game/labletheme.tres" id="8_i4xgj"]
 [ext_resource type="Texture2D" uid="uid://c5nel6y6bjemg" path="res://assets/sun.png" id="8_mk7db"]
+[ext_resource type="Script" uid="uid://c7yfserlk05sf" path="res://Score/timer.gd" id="10_2kthv"]
+[ext_resource type="Script" uid="uid://bb6jw7u5l3p1m" path="res://Cloud/CloudSpawner.gd" id="12_lhric"]
 
 [sub_resource type="Animation" id="Animation_ofllg"]
 tracks/0/type = "value"
@@ -171,9 +173,18 @@ horizontal_alignment = 1
 uppercase = true
 
 [node name="ComboConfetti" type="Label" parent="ScoreAndCombo"]
-offset_left = 126.0
-offset_right = 166.0
-offset_bottom = 23.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_i4xgj")
 
 [node name="Height" type="Label" parent="ScoreAndCombo"]
 anchors_preset = 12
@@ -198,10 +209,45 @@ grow_vertical = 0
 theme = ExtResource("8_i4xgj")
 horizontal_alignment = 1
 
+[node name="Timer" type="Label" parent="ScoreAndCombo" node_paths=PackedStringArray("excitement_label")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -246.5
+offset_right = 20.0
+offset_bottom = -163.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_i4xgj")
+script = ExtResource("10_2kthv")
+excitement_label = NodePath("../ExcitementMessage")
+
+[node name="ExcitementMessage" type="Label" parent="ScoreAndCombo"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_i4xgj")
+
 [node name="SunSprite" type="Sprite2D" parent="."]
 z_index = -8
 position = Vector2(372, -669)
 texture = ExtResource("8_mk7db")
+
+[node name="CloudSpawner" type="Node" parent="."]
+script = ExtResource("12_lhric")
+floor_height = -300.0
+spacing_variation = 0.8
 
 [connection signal="pressed" from="DebugControl/HBoxContainer/waveLeft" to="." method="_on_wave_left_pressed"]
 [connection signal="pressed" from="DebugControl/HBoxContainer/waveRight" to="." method="_on_wave_right_pressed"]

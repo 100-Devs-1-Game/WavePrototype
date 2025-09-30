@@ -1,19 +1,40 @@
-[gd_scene load_steps=4 format=3 uid="uid://cr6mk1qfj240d"]
+[gd_scene load_steps=6 format=3 uid="uid://cr6mk1qfj240d"]
 
 [ext_resource type="Script" uid="uid://dsdsko4y5jhgv" path="res://SkyHoop/SkyHoop.gd" id="1_caurf"]
+[ext_resource type="Texture2D" uid="uid://c6hi5jbryv1ae" path="res://assets/seagull.png" id="2_rsg2b"]
+[ext_resource type="Texture2D" uid="uid://cqr0gkwhcxq0r" path="res://assets/seagull_crash.png" id="3_01aj5"]
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yspw2"]
-size = Vector2(200, 15)
+[sub_resource type="SpriteFrames" id="SpriteFrames_ly4yn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rsg2b")
+}],
+"loop": true,
+"name": &"flap",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_01aj5")
+}],
+"loop": true,
+"name": &"hit",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_caurf"]
 radius = 3.0
 height = 198.0
 
-[node name="SkyHoop" type="Node2D"]
+[node name="SkyHoop" type="Node2D" node_paths=PackedStringArray("animsprite")]
 script = ExtResource("1_caurf")
+animsprite = NodePath("Sprite2D")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("PlaceholderTexture2D_yspw2")
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_ly4yn")
+animation = &"hit"
 
 [node name="SkyDetector" type="Area2D" parent="."]
 collision_layer = 4
