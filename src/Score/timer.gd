@@ -6,6 +6,7 @@ var increment_counter : float = 0.0
 var time_has_started : bool = false
 @export var excitement_label : Label
 
+signal spawn_boat
 signal new_box_spawn_wave
 var box_spawn_wave_count : int = 1
 signal do_ocean_madness
@@ -14,7 +15,7 @@ signal game_finished
 # Intro messages
 @export var intro_messages : Array[String] = [
 	"GET READY!",
-	"COLLECT BOXES!",
+	"SMASH BOXES!",
 	"BUILD COMBOS!",
 	"GO!"
 ]
@@ -52,10 +53,11 @@ func start_intro_sequence():
 		tween_out.tween_property(excitement_label, "scale", Vector2.ONE, 0.2)
 		
 		await tween_out.finished
-	
+	spawn_boat.emit()
 	# Start the game
 	time_has_started = true
 	increment_counter = 0.0
+	
 
 func start_timer() -> bool:
 	return time_has_started
