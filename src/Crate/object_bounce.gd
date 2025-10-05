@@ -13,6 +13,11 @@ var recent_collisions := {}  # id -> last_time
 
 signal broken(point_value : int)
 
+func explode_no_points():
+				var explosion = preload("res://explosion/explosion.tscn").instantiate()
+				explosion.global_position = velocity_holder.global_position
+				get_tree().current_scene.add_child(explosion)
+
 func _on_area_entered(area: Area2D) -> void:
 	if not area.is_inside_tree():
 		return

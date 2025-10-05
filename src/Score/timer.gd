@@ -1,16 +1,16 @@
 extends Label
+class_name TimerForRound
 
 @export var increment : float = 10.0
 var increment_counter : float = 0.0
-@export var time : float = 120.0
+@export var time : float = 60.0#also connected to the UMM spawner timer
 var time_has_started : bool = false
 @export var excitement_label : Label
 
-signal spawn_boat
-signal new_box_spawn_wave
+signal new_box_spawn_wave(count : int)
 var box_spawn_wave_count : int = 1
 signal do_ocean_madness
-signal game_finished
+signal game_finished #where is this connected?
 
 # Intro messages
 @export var intro_messages : Array[String] = [
@@ -25,9 +25,10 @@ signal game_finished
 var countdown_messages : Array[String] = ["3", "2", "1", "GO!"]
 var is_counting_event : bool = false
 
+signal start_game_intro()
+
 func _ready() -> void:
 	text = format_time(time)
-	start_intro_sequence()
 
 func start_intro_sequence():
 	excitement_label.modulate.a = 0.0
@@ -53,11 +54,16 @@ func start_intro_sequence():
 		tween_out.tween_property(excitement_label, "scale", Vector2.ONE, 0.2)
 		
 		await tween_out.finished
-	spawn_boat.emit()
+	
+	spawn_boxes()
+	
 	# Start the game
 	time_has_started = true
 	increment_counter = 0.0
-	
+
+func spawn_boxes():
+	new_box_spawn_wave.emit(box_spawn_wave_count)
+	box_spawn_wave_count += 1
 
 func start_timer() -> bool:
 	return time_has_started
@@ -70,7 +76,7 @@ func _physics_process(delta: float) -> void:
 	time -= delta
 	text = format_time(time)
 	
-	# Check if time is up
+	# Check if time is up, and finish the round
 	if time <= 0:
 		time = 0
 		text = format_time(0)
@@ -78,7 +84,7 @@ func _physics_process(delta: float) -> void:
 		time_has_started = false
 		return
 	
-	# Track increment for events
+	# Track increment for events (only when not already counting down)
 	if not is_counting_event:
 		increment_counter += delta
 		
@@ -88,11 +94,7 @@ func _physics_process(delta: float) -> void:
 		# Start countdown warning at 3 seconds before event
 		if time_until_next_event <= 3.0 and time_until_next_event > 2.9:
 			start_event_countdown()
-		
-		# Trigger event when increment is reached
-		if increment_counter >= increment:
-			trigger_events()
-			increment_counter = 0.0
+		# NOTE: Removed the immediate trigger here - countdown handles it now
 
 func start_event_countdown():
 	is_counting_event = true
@@ -118,16 +120,18 @@ func show_event_countdown():
 		
 		await get_tree().create_timer(0.8).timeout
 	
-	# "GO!" message happens in trigger_events()
+	# THIS WAS MISSING! Call trigger_events after countdown finishes
+	trigger_events()
 
 func trigger_events():
 	# Show GO! message
 	excitement_label.text = "GO!"
 	animate_excitement_text(Color.GREEN, 0.4)
+	print("EVENT TRIGGERED")
 	
 	# Determine which events to trigger
-	var trigger_boxes = (box_spawn_wave_count % 2 == 1)  # Every other wave
 	var trigger_madness = (box_spawn_wave_count % 3 == 0)  # Every 3rd wave
+	var trigger_boxes = true
 	
 	# Add some randomness for variety
 	if randf() > 0.7:
@@ -135,7 +139,7 @@ func trigger_events():
 	
 	# Emit signals
 	if trigger_boxes:
-		new_box_spawn_wave.emit()
+		new_box_spawn_wave.emit(box_spawn_wave_count)
 		show_event_effect("BOXES SPAWNED!", Color.GOLD)
 	
 	if trigger_madness:
@@ -143,6 +147,7 @@ func trigger_events():
 		show_event_effect("OCEAN MADNESS!", Color.CYAN)
 	
 	box_spawn_wave_count += 1
+	increment_counter = 0.0  # CRITICAL: Reset counter here!
 	is_counting_event = false
 
 func show_event_effect(message: String, color: Color):
@@ -162,8 +167,8 @@ func animate_excitement_text(color: Color, duration: float):
 	excitement_label.rotation = 0
 	
 	# Pop in
-	tween.tween_property(excitement_label, "modulate:a", 1.0, 0.15)
-	tween.tween_property(excitement_label, "scale", Vector2.ONE * 1.3, 0.15)
+	tween.tween_property(excitement_label, "modulate:a", 1.0, 0.05)
+	tween.tween_property(excitement_label, "scale", Vector2.ONE * 1.3, 0.05)
 	
 	# Slight bounce
 	tween.tween_property(excitement_label, "scale", Vector2.ONE * 1.1, 0.1)
@@ -186,6 +191,7 @@ func finish():
 	show_finish_sequence()
 
 func show_finish_sequence():
+	game_finished.emit()
 	# Final messages
 	var finish_messages = [
 		"TIME'S UP!",
@@ -197,7 +203,7 @@ func show_finish_sequence():
 		excitement_label.text = message
 		
 		var color = Color.GOLD if message == "GREAT JOB!" else Color.WHITE
-		animate_excitement_text(color, 1.0)
+		animate_excitement_text(color, 2.0)
 		
 		await get_tree().create_timer(1.5).timeout
 	
@@ -209,15 +215,3 @@ func format_time(seconds: float) -> String:
 	var mins = int(seconds) / 60
 	var secs = int(seconds) % 60
 	return "%d:%02d" % [mins, secs]
-
-# Optional: Add time warning when getting low
-func _on_time_warning():
-	if time <= 30 and time > 29:
-		excitement_label.text = "30 SECONDS LEFT!"
-		animate_excitement_text(Color.ORANGE, 1.0)
-	elif time <= 10 and time > 9:
-		excitement_label.text = "10 SECONDS!"
-		animate_excitement_text(Color.RED, 1.0)
-
-# Call this in _physics_process if you want time warnings
-# Just add: _on_time_warning() after updating the time

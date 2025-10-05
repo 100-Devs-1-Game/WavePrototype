@@ -1,6 +1,18 @@
 extends Node
 class_name GameMode
 
+@export var starting_box : PackedScene = preload("res://StartingBox/starting_collison.tscn")
+@export var spawner : Spawner
+@export var score : ScoreTracker
+@export var timer_tracker : TimerForRound
+
+func _ready() -> void:
+	var temp_starter_box = starting_box.instantiate()
+	temp_starter_box.global_position = Vector2(500,-100)
+	temp_starter_box.start_round.connect(Callable(timer_tracker,"start_intro_sequence" ))
+	add_child(temp_starter_box)
+	
+
 @export var water : Water
 
 func _on_wave_left_pressed() -> void:

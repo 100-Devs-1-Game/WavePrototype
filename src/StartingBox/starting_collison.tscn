@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://bx8v034eoyi2i"]
+
+[ext_resource type="Script" uid="uid://bo3mtwboy8qs6" path="res://StartingBox/StartingBox.gd" id="1_oi3d3"]
+[ext_resource type="Theme" uid="uid://durnxvl8gis2i" path="res://Game/labletheme.tres" id="2_gcdpk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ty21x"]
+size = Vector2(64, 64)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_v53v4"]
+size = Vector2(64, 64)
+
+[node name="StartingCollison" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_oi3d3")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ty21x")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture = SubResource("PlaceholderTexture2D_v53v4")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -68.0
+offset_top = -106.0
+offset_right = 70.0
+offset_bottom = -23.0
+theme = ExtResource("2_gcdpk")
+text = "START"
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

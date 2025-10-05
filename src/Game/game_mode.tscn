@@ -73,8 +73,11 @@ _data = {
 &"intro": SubResource("Animation_xj34o")
 }
 
-[node name="GameMode" type="Node" node_paths=PackedStringArray("water")]
+[node name="GameMode" type="Node" node_paths=PackedStringArray("spawner", "score", "timer_tracker", "water")]
 script = ExtResource("1_34rqk")
+spawner = NodePath("Spawner")
+score = NodePath("ScoreAndCombo")
+timer_tracker = NodePath("ScoreAndCombo/Timer")
 water = NodePath("Water")
 
 [node name="Water" parent="." instance=ExtResource("1_4w06o")]
@@ -117,12 +120,12 @@ text = "Pit"
 layout_mode = 2
 text = "Crate"
 
-[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("water", "game_mode", "score_tracker")]
+[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("water", "game_mode", "score_tracker", "timer_for_round")]
 script = ExtResource("4_s4d64")
-debug = true
 water = NodePath("../Water")
 game_mode = NodePath("..")
 score_tracker = NodePath("../ScoreAndCombo")
+timer_for_round = NodePath("../ScoreAndCombo/Timer")
 
 [node name="SeaweedFloorSpawner" parent="." instance=ExtResource("5_nnm2n")]
 density = 5
@@ -229,6 +232,7 @@ script = ExtResource("10_2kthv")
 excitement_label = NodePath("../ExcitementMessage")
 
 [node name="ExcitementMessage" type="Label" parent="ScoreAndCombo"]
+custom_minimum_size = Vector2(700, 150)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -240,7 +244,10 @@ offset_right = 20.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(350, 75)
 theme = ExtResource("8_i4xgj")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SunSprite" type="Sprite2D" parent="."]
 z_index = -8

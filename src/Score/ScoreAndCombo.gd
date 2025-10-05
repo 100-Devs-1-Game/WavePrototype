@@ -8,6 +8,7 @@ class_name ScoreTracker
 @onready var combo_confetti_label : Label = $ComboConfetti
 @onready var height_label : Label = $Height
 @onready var highest_height_label : Label = $Highest_Height
+@onready var timer_coutner : TimerForRound = $Timer
 var highest_height : float = 0
 var current_score : int = 0
 var combo_tracker_score : int = 0
@@ -17,18 +18,30 @@ var combo_tracker_score : int = 0
 @export var combo_pulse_scale: float = 1.4
 @export var confetti_messages: Array[String] = ["NICE!", "COMBO!", "AWESOME!", "AMAZING!", "INCREDIBLE!"]
 
+var game_finished : bool = false
+
+
+func _ready() -> void:
+	timer_coutner.game_finished.connect(Callable(self, "stop_scoring"))
+
+func stop_scoring():
+	game_finished = true
+
 func _process(delta: float) -> void:
-	var current_height = abs(vehicle.global_position.y)
-	var result = "%.1f" % current_height
-	if current_height > highest_height:
-		highest_height = current_height
-		var height_result = "%.1f" % highest_height
-		highest_height_label.text = str(height_result)
-		
-	height_label.text = str(result)
+	if not game_finished:
+		var current_height = abs(vehicle.global_position.y)
+		var result = "%.1f" % current_height
+		if current_height > highest_height:
+			highest_height = current_height
+			var height_result = "%.1f" % highest_height
+			highest_height_label.text = str(height_result)
+			
+		height_label.text = str(result)
 	
 	
 func update_score(points_to_add : int):
+	if game_finished:
+		return
 	var current_height = abs(vehicle.global_position.y)
 	height_label.text = str(current_height)
 	var final_points = points_to_add
@@ -60,6 +73,8 @@ func update_score(points_to_add : int):
 @export var auto_scale_text: bool = true  # Enable automatic text scaling
 
 func animate_score_count_up(points_to_add: int):
+	if game_finished:
+		return
 	var start_score = current_score
 	var target_score = current_score + points_to_add
 	
@@ -138,6 +153,8 @@ func mini_bounce_scaled():
 	mini_tween.tween_property(score_label, "scale", current_scale, 0.05)
 
 func update_score_display(score: int):
+	if game_finished:
+		return
 	score_label.text = format_score_text(score)
 	
 	# Auto-scale text if it's too wide
@@ -244,6 +261,8 @@ func final_score_effect(points_gained: int):
 		flash_tween.tween_property(score_label, "modulate", Color.WHITE, 0.15)
 
 func animate_combo_score():
+	if game_finished:
+		return
 	# Extra sparkle for combo scores
 	var tween = create_tween()
 	tween.set_parallel(true)
@@ -254,6 +273,8 @@ func animate_combo_score():
 	tween.tween_property(score_label, "rotation", 0, 0.05)
 
 func update_combo():
+	if game_finished:
+		return
 	combo_tracker_score += 1
 	combo_counter_label.text = str(combo_tracker_score) + "x"
 	
@@ -265,6 +286,8 @@ func update_combo():
 		show_confetti()
 
 func animate_combo_update():
+	if game_finished:
+		return
 	var tween = create_tween()
 	tween.set_parallel(true)
 	
@@ -314,6 +337,8 @@ func animate_combo_reset():
 	combo_counter_label.modulate.a = 1.0
 
 func show_confetti():
+	if game_finished:
+		return
 	if confetti_messages.is_empty():
 		return
 	
@@ -324,6 +349,8 @@ func show_confetti():
 	animate_confetti()
 
 func animate_confetti():
+	if game_finished:
+		return
 	var tween = create_tween()
 	tween.set_parallel(true)
 	
@@ -392,6 +419,8 @@ func screen_shake(intensity: float = 5.0, duration: float = 0.2):
 
 # Call this for massive scores (like 1000+ points)
 func epic_score_effect():
+	if game_finished:
+		return
 	screen_shake(10.0, 0.4)
 	
 	# Flash the entire screen briefly
