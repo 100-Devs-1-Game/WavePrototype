@@ -5,8 +5,6 @@ class_name Intro
 @export var game_mode : GameMode
 @export var spawner : Spawner
 
-@onready var camera : Camera2D = $Camera2D 
-
 signal intro_finished()
 
 func _ready() -> void:

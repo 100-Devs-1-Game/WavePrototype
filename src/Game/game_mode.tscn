@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b1e61prvvbfsu"]
+[gd_scene load_steps=18 format=3 uid="uid://b1e61prvvbfsu"]
 
 [ext_resource type="PackedScene" uid="uid://bemjkyfmkelmd" path="res://Ocean/ocean.tscn" id="1_4w06o"]
 [ext_resource type="Script" uid="uid://l7dp4wo806mh" path="res://Game/game_mode.gd" id="1_34rqk"]
@@ -8,64 +8,30 @@
 [ext_resource type="Script" uid="uid://urdp2hqgwvn4" path="res://WaveMaker/WaveMaker.gd" id="5_s4d64"]
 [ext_resource type="Script" uid="uid://byd800euerxci" path="res://Intro/Intro.gd" id="6_xj34o"]
 [ext_resource type="Script" uid="uid://dfrv5ii44l7oq" path="res://Score/ScoreAndCombo.gd" id="7_ofllg"]
+[ext_resource type="Texture2D" uid="uid://dgqf5wx0xjvo" path="res://assets/splash.png" id="8_frcpu"]
 [ext_resource type="Theme" uid="uid://durnxvl8gis2i" path="res://Game/labletheme.tres" id="8_i4xgj"]
 [ext_resource type="Texture2D" uid="uid://c5nel6y6bjemg" path="res://assets/sun.png" id="8_mk7db"]
 [ext_resource type="Script" uid="uid://c7yfserlk05sf" path="res://Score/timer.gd" id="10_2kthv"]
+[ext_resource type="Script" uid="uid://b7sdlmy8wxlwb" path="res://EngGameOverlay/EndGameOverlay.gd" id="12_76amw"]
 [ext_resource type="Script" uid="uid://bb6jw7u5l3p1m" path="res://Cloud/CloudSpawner.gd" id="12_lhric"]
 
 [sub_resource type="Animation" id="Animation_ofllg"]
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Camera2D:enabled")
+tracks/0/path = NodePath("Sprite2D:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Camera2D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.966667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, 300), Vector2(300, 300)]
+"values": [Vector2(800, 800), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_xj34o"]
 resource_name = "intro"
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Camera2D:enabled")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Camera2D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(300, 300)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mk7db"]
 _data = {
@@ -73,11 +39,13 @@ _data = {
 &"intro": SubResource("Animation_xj34o")
 }
 
-[node name="GameMode" type="Node" node_paths=PackedStringArray("spawner", "score", "timer_tracker", "water")]
+[node name="GameMode" type="Node" node_paths=PackedStringArray("spawner", "score", "timer_tracker", "wave_maker", "end_game_overlay", "water")]
 script = ExtResource("1_34rqk")
 spawner = NodePath("Spawner")
 score = NodePath("ScoreAndCombo")
 timer_tracker = NodePath("ScoreAndCombo/Timer")
+wave_maker = NodePath("WaveMaker")
+end_game_overlay = NodePath("ScoreAndCombo/EndgameOverlay")
 water = NodePath("Water")
 
 [node name="Water" parent="." instance=ExtResource("1_4w06o")]
@@ -143,14 +111,17 @@ water = NodePath("../Water")
 game_mode = NodePath("..")
 spawner = NodePath("../Spawner")
 
-[node name="Camera2D" type="Camera2D" parent="Intro"]
-position = Vector2(0, 300)
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Intro"]
 libraries = {
 &"": SubResource("AnimationLibrary_mk7db")
 }
-autoplay = "intro"
+autoplay = "RESET"
+
+[node name="Sprite2D" type="Sprite2D" parent="Intro"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(930, 677)
+scale = Vector2(800, 800)
+texture = ExtResource("8_frcpu")
 
 [node name="ScoreAndCombo" type="CanvasLayer" parent="."]
 script = ExtResource("7_ofllg")
@@ -216,6 +187,7 @@ theme = ExtResource("8_i4xgj")
 horizontal_alignment = 1
 
 [node name="Timer" type="Label" parent="ScoreAndCombo" node_paths=PackedStringArray("excitement_label")]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -248,6 +220,219 @@ pivot_offset = Vector2(350, 75)
 theme = ExtResource("8_i4xgj")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="EndgameOverlay" type="Control" parent="ScoreAndCombo"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("12_76amw")
+
+[node name="GameOverOverlay" type="Panel" parent="ScoreAndCombo/EndgameOverlay"]
+custom_minimum_size = Vector2(700, 650)
+layout_mode = 0
+offset_left = 647.0
+offset_top = 214.0
+offset_right = 687.0
+offset_bottom = 254.0
+
+[node name="ResultLabel" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme = ExtResource("8_i4xgj")
+text = "results"
+horizontal_alignment = 1
+
+[node name="ScorePanel" type="Panel" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -139.0
+offset_right = -2.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CurrentScore" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/ScorePanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -41.5
+offset_right = 82.0
+offset_bottom = 41.5
+grow_vertical = 2
+theme = ExtResource("8_i4xgj")
+text = "122"
+
+[node name="BestScore" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/ScorePanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -47.5
+offset_top = -41.5
+offset_right = 47.5
+offset_bottom = 41.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_i4xgj")
+text = "233"
+
+[node name="NewBadge" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/ScorePanel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -41.5
+offset_bottom = 41.5
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("8_i4xgj")
+text = "x"
+
+[node name="HighScore" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/ScorePanel"]
+layout_mode = 0
+offset_left = 304.0
+offset_top = -70.0
+offset_right = 537.0
+offset_bottom = 13.0
+theme = ExtResource("8_i4xgj")
+text = "Top Score"
+
+[node name="YourScore" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/ScorePanel"]
+layout_mode = 0
+offset_left = -9.0
+offset_top = -71.0
+offset_right = 224.0
+offset_bottom = 12.0
+theme = ExtResource("8_i4xgj")
+text = "Your Score"
+
+[node name="HeightPanel" type="Panel" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 2.0
+offset_top = 37.0
+offset_right = 2.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CurrentHeight" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/HeightPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -41.5
+offset_right = 66.0
+offset_bottom = 41.5
+grow_vertical = 2
+theme = ExtResource("8_i4xgj")
+text = "55"
+
+[node name="BestHeight" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/HeightPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.5
+offset_top = -41.5
+offset_right = 49.5
+offset_bottom = 41.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("8_i4xgj")
+text = "555"
+
+[node name="NewBadge" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/HeightPanel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -41.5
+offset_bottom = 41.5
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("8_i4xgj")
+text = "f"
+
+[node name="HighHeight" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/HeightPanel"]
+layout_mode = 0
+offset_left = 304.0
+offset_top = -67.0
+offset_right = 537.0
+offset_bottom = 16.0
+theme = ExtResource("8_i4xgj")
+text = "Top Height"
+
+[node name="YourHeight" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay/HeightPanel"]
+layout_mode = 0
+offset_left = -9.0
+offset_top = -68.0
+offset_right = 254.0
+offset_bottom = 15.0
+theme = ExtResource("8_i4xgj")
+text = "Your Height"
+
+[node name="MessageLabel" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_i4xgj")
+text = "good job"
+horizontal_alignment = 1
+
+[node name="PlayAgainButton" type="Button" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_right = 8.0
+grow_vertical = 0
+theme = ExtResource("4_p3h2i")
+text = "again"
+
+[node name="MenuButton" type="Button" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("4_p3h2i")
+text = "quit"
 
 [node name="SunSprite" type="Sprite2D" parent="."]
 z_index = -8

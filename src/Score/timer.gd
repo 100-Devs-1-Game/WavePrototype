@@ -9,9 +9,9 @@ var time_has_started : bool = false
 
 signal new_box_spawn_wave(count : int)
 var box_spawn_wave_count : int = 1
-signal do_ocean_madness
-signal game_finished #where is this connected?
-
+signal do_ocean_madness(count : int) #where is this?
+signal game_finished #where is this connected? in the spawner at least and score
+signal new_gull
 # Intro messages
 @export var intro_messages : Array[String] = [
 	"GET READY!",
@@ -31,6 +31,7 @@ func _ready() -> void:
 	text = format_time(time)
 
 func start_intro_sequence():
+	visible=true
 	excitement_label.modulate.a = 0.0
 	
 	for i in range(intro_messages.size()):
@@ -129,22 +130,12 @@ func trigger_events():
 	animate_excitement_text(Color.GREEN, 0.4)
 	print("EVENT TRIGGERED")
 	
-	# Determine which events to trigger
-	var trigger_madness = (box_spawn_wave_count % 3 == 0)  # Every 3rd wave
-	var trigger_boxes = true
 	
-	# Add some randomness for variety
-	if randf() > 0.7:
-		trigger_madness = !trigger_madness
+	new_box_spawn_wave.emit(box_spawn_wave_count)
+	show_event_effect("BOXES SPAWNED!", Color.GOLD)
 	
-	# Emit signals
-	if trigger_boxes:
-		new_box_spawn_wave.emit(box_spawn_wave_count)
-		show_event_effect("BOXES SPAWNED!", Color.GOLD)
-	
-	if trigger_madness:
-		do_ocean_madness.emit()
-		show_event_effect("OCEAN MADNESS!", Color.CYAN)
+	do_ocean_madness.emit(box_spawn_wave_count)
+	show_event_effect("OCEAN MADNESS!", Color.CYAN)
 	
 	box_spawn_wave_count += 1
 	increment_counter = 0.0  # CRITICAL: Reset counter here!
@@ -188,15 +179,14 @@ func animate_excitement_text(color: Color, duration: float):
 	fade_tween.tween_property(excitement_label, "scale", Vector2.ZERO, 0.3)
 
 func finish():
+	
 	show_finish_sequence()
 
 func show_finish_sequence():
-	game_finished.emit()
 	# Final messages
 	var finish_messages = [
 		"TIME'S UP!",
 		"CALCULATING...",
-		"GREAT JOB!"
 	]
 	
 	for message in finish_messages:
@@ -207,10 +197,15 @@ func show_finish_sequence():
 		
 		await get_tree().create_timer(1.5).timeout
 	
-	# Return to main menu
+
 	await get_tree().create_timer(0.5).timeout
 	game_finished.emit()
-
+	visible=false
+	#tells a few things to reset.
+	#first tell the score to show the results...
+	#so connect game_finished to score
+	
+	
 func format_time(seconds: float) -> String:
 	var mins = int(seconds) / 60
 	var secs = int(seconds) % 60

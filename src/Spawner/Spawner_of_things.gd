@@ -26,6 +26,10 @@ var bouncing_boat
 func _ready() -> void:
 	timer_for_round.new_box_spawn_wave.connect(Callable(self, "spawn_crate"))
 	timer_for_round.game_finished.connect(Callable(self, "kill_all_boxes"))
+	timer_for_round.new_gull.connect(Callable(self,"spawn_gull"))
+
+func spawn_gull():
+	pass
 
 func spawn_boat():
 	var temp_vehicle = vehicle.instantiate()

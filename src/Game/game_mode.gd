@@ -5,12 +5,17 @@ class_name GameMode
 @export var spawner : Spawner
 @export var score : ScoreTracker
 @export var timer_tracker : TimerForRound
+@export var wave_maker : WaveMaker
+@export var end_game_overlay : EndGameOverlay
 
 func _ready() -> void:
 	var temp_starter_box = starting_box.instantiate()
 	temp_starter_box.global_position = Vector2(500,-100)
 	temp_starter_box.start_round.connect(Callable(timer_tracker,"start_intro_sequence" ))
+	temp_starter_box.start_round.connect(Callable(end_game_overlay, ("hide_scoreboard")))
+	timer_tracker.do_ocean_madness.connect(Callable(wave_maker, "make_ocean_maddess"))
 	add_child(temp_starter_box)
+	timer_tracker.game_finished.connect(Callable(end_game_overlay,"stop_scoring"))
 	
 
 @export var water : Water

@@ -9,8 +9,8 @@ class_name ScoreTracker
 @onready var height_label : Label = $Height
 @onready var highest_height_label : Label = $Highest_Height
 @onready var timer_coutner : TimerForRound = $Timer
-var highest_height : float = 0
-var current_score : int = 0
+@onready var endgame_overlay : EndGameOverlay = $EndgameOverlay
+
 var combo_tracker_score : int = 0
 
 # Animation settings
@@ -19,16 +19,24 @@ var combo_tracker_score : int = 0
 @export var confetti_messages: Array[String] = ["NICE!", "COMBO!", "AWESOME!", "AMAZING!", "INCREDIBLE!"]
 
 var game_finished : bool = false
+signal score_result(finalscore : int) 
 
 
 func _ready() -> void:
 	timer_coutner.game_finished.connect(Callable(self, "stop_scoring"))
 
+var highest_height : float = 0 #updated as you play the game
+var current_score : int = 0 #updated as you play the game
+
 func stop_scoring():
 	game_finished = true
+	endgame_overlay.highest_height = highest_height 
+	endgame_overlay.current_score = current_score
+	endgame_overlay.game_finished = game_finished
 
 func _process(delta: float) -> void:
-	if not game_finished:
+	if not game_finished and vehicle != null:
+		
 		var current_height = abs(vehicle.global_position.y)
 		var result = "%.1f" % current_height
 		if current_height > highest_height:
