@@ -27,6 +27,18 @@ func _ready() -> void:
 	timer_for_round.new_box_spawn_wave.connect(Callable(self, "spawn_crate"))
 	timer_for_round.game_finished.connect(Callable(self, "kill_all_boxes"))
 	timer_for_round.new_gull.connect(Callable(self,"spawn_gull"))
+	await get_tree().create_timer(0.4).timeout
+	spawn_starting_gulls()
+	
+func spawn_starting_gulls():
+	for i in 50:
+			var temp_hoop = sky_hoop.instantiate()
+			game_mode.add_child(temp_hoop)
+			var x_to_spawn = float(randf_range(50,8990))
+			var p_to_spawn = float(randf_range(-100,-900))
+			temp_hoop.starting_y = p_to_spawn
+			temp_hoop.global_position = Vector2(x_to_spawn, p_to_spawn) 
+			temp_hoop.broken.connect(Callable(score_tracker,"update_score"))
 
 func spawn_gull():
 	pass
@@ -77,7 +89,9 @@ func calculate_spawn_amount(wave_count: int) -> int:
 func spawn_sky_hoop():
 	var temp_hoop = sky_hoop.instantiate()
 	game_mode.add_child(temp_hoop)
-	temp_hoop.global_position = Vector2(randf_range(10,5000),randf_range(0,-600))
+	var p_to_spawn = float(randf_range(-100,-900))
+	temp_hoop.starting_y = p_to_spawn
+	temp_hoop.global_position = Vector2(-60, p_to_spawn) 
 	temp_hoop.broken.connect(Callable(score_tracker,"update_score"))
 
 func _on_spawn_crate_pressed() -> void:
@@ -93,5 +107,5 @@ func _process(delta: float) -> void:
 				call_one()		
 
 func call_one():
-	spawn_crate(1)
+	#spawn_crate(1)
 	spawn_sky_hoop()

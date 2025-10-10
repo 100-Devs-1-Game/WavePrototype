@@ -22,6 +22,18 @@ func _on_area_entered(area: Area2D) -> void:
 	if not area.is_inside_tree():
 		return
 
+	if area.is_in_group("seagull"):
+		life -= 1
+		if life <= 0 :
+			var explosion = preload("res://explosion/explosion.tscn").instantiate()
+			explosion.global_position = velocity_holder.global_position
+			get_tree().current_scene.add_child(explosion)
+			broken.emit(points)
+			velocity_holder.queue_free()
+			print("THIS IS THE SEAGUL")
+		
+		return
+
 	var collision_velocity_holder: CharacterBody2D = area.get_parent()
 	if collision_velocity_holder == null:
 		return

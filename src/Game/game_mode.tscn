@@ -90,6 +90,7 @@ text = "Crate"
 
 [node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("water", "game_mode", "score_tracker", "timer_for_round")]
 script = ExtResource("4_s4d64")
+debug = true
 water = NodePath("../Water")
 game_mode = NodePath("..")
 score_tracker = NodePath("../ScoreAndCombo")

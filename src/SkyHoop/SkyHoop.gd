@@ -5,19 +5,56 @@ signal broken(point_value : int)
 @export var points : int = 100
 @export var animsprite : AnimatedSprite2D
 
+# Movement settings
+@export var speed : float = 100.0
+@export var flight_height_variation : float = 20.0  # How much it bobs up and down
+@export var bob_speed : float = 2.0  # Speed of up/down bobbing
+@export var auto_despawn : bool = true
+@export var despawn_distance : float = 11000.0
+
+var starting_y : float
+var time_elapsed : float = 0.0
+var is_hit : bool = false
+
 func _ready() -> void:
 	animsprite.play("flap")
+	
+	# Optional: Random speed variation for each seagull
+	speed += randf_range(-20, 20)
+	
+	# Optional: Random scale for variety
+	var random_scale = randf_range(0.8, 1.2)
+	scale = Vector2(random_scale, random_scale)
+
+func _physics_process(delta: float) -> void:
+	if is_hit:
+		return  # Stop moving when hit
+	
+	# Move to the right
+	position.x += speed * delta
+	
+	# Add bobbing motion (sine wave for natural flight)
+	time_elapsed += delta
+	var bob_offset = sin(time_elapsed * bob_speed) * flight_height_variation
+	position.y = starting_y + bob_offset
+	
+	# Auto-remove when far off screen
+	if auto_despawn and position.x > despawn_distance:
+		queue_free()
 
 func _on_sky_detector_area_entered(area: Area2D) -> void:
+	if is_hit:
+		return  # Prevent multiple hits
+	
+	is_hit = true
 	broken.emit(points)
 	animsprite.play("hit")
 	
-	# Add a squish mostly horizontal stretch and shrink before queue_freeing
 	await squish_and_break()
 	queue_free()
 
 func squish_and_break():
-	var sprite = $Sprite2D  # Adjust path to your sprite node if different
+	var sprite = $Sprite2D  
 	if not sprite:
 		return  # Exit if no sprite found
 	
@@ -26,66 +63,40 @@ func squish_and_break():
 	
 	# Sequential animation - each step waits for the previous to finish
 	tween.set_parallel(false)
+	
 	# Step 1: Horizontal stretch with slight vertical squish
 	var stretch_scale = Vector2(original_scale.x * 1.4, original_scale.y * 1.2)
 	tween.tween_property(sprite, "scale", stretch_scale, 0.1)
 	
-	# Step 2: Shrink down to nothing (with parallel rotation and fade)
-	  # Now allow parallel for the final effects
+	# Step 2: Shrink down to nothing 
 	tween.tween_property(sprite, "scale", Vector2.ZERO, 0.15)
-	#tween.tween_property(sprite, "rotation", deg_to_rad(90), 0.15)  # Match duration
 	
-	# Optional: Fade out (match duration with others)
-	#if sprite.has_method("set_modulate"):
-		#tween.tween_property(sprite, "modulate:a", 0.0, 0.15)
+	# Optional: Spin while falling
+	tween.set_parallel(true)
+	tween.tween_property(self, "rotation", deg_to_rad(180), 0.25)
+	tween.tween_property(self, "position:y", position.y + 100, 0.25)  # Fall down
 	
 	# Wait for animation to complete
 	await tween.finished
 
-# Alternative more dramatic version with proper sequencing
-func squish_and_break_dramatic():
-	var sprite = $Sprite2D
-	if not sprite:
+# Alternative: More realistic flight pattern
+func _physics_process_realistic(delta: float) -> void:
+	if is_hit:
 		return
 	
-	var tween = create_tween()
-	var original_scale = sprite.scale
+	# Move to the right
+	position.x += speed * delta
 	
-	# Sequential steps for precise timing
+	# More complex flight pattern with multiple sine waves
+	time_elapsed += delta
+	var primary_bob = sin(time_elapsed * bob_speed) * flight_height_variation
+	var secondary_bob = sin(time_elapsed * bob_speed * 2.3) * (flight_height_variation * 0.3)
+	position.y = starting_y + primary_bob + secondary_bob
 	
-	# Step 1: Stretch horizontally
-	var stretch_scale = Vector2(original_scale.x * 1.8, original_scale.y * 0.6)
-	tween.tween_property(sprite, "scale", stretch_scale, 0.08)
+	# Slight rotation based on vertical movement (tilts when going up/down)
+	var vertical_velocity = cos(time_elapsed * bob_speed) * bob_speed * flight_height_variation
+	animsprite.rotation = deg_to_rad(vertical_velocity * 2)  # Subtle tilt
 	
-	# Step 2: Quick vertical squish
-	var mid_scale = Vector2(original_scale.x * 0.8, original_scale.y * 1.2)
-	tween.tween_property(sprite, "scale", mid_scale, 0.06)
-	
-	# Step 3: Final shrink with parallel rotation and fade
-	tween.set_parallel(true)
-	tween.tween_property(sprite, "scale", Vector2.ZERO, 0.12)
-	tween.tween_property(sprite, "rotation", deg_to_rad(180), 0.12)  # Match duration
-	tween.tween_property(sprite, "modulate:a", 0.0, 0.12)  # Match duration
-	
-	await tween.finished
-
-# Alternative: Using tween chaining method
-func squish_and_break_chained():
-	var sprite = $Sprite2D
-	if not sprite:
-		return
-	
-	var original_scale = sprite.scale
-	
-	# Create separate tweens for each step
-	var tween1 = create_tween()
-	var stretch_scale = Vector2(original_scale.x * 1.4, original_scale.y * 0.8)
-	tween1.tween_property(sprite, "scale", stretch_scale, 0.1)
-	await tween1.finished
-	
-	var tween2 = create_tween()
-	tween2.set_parallel(true)
-	tween2.tween_property(sprite, "scale", Vector2.ZERO, 0.15)
-	tween2.tween_property(sprite, "rotation", deg_to_rad(90), 0.15)
-	tween2.tween_property(sprite, "modulate:a", 0.0, 0.15)
-	await tween2.finished
+	# Auto-remove when far off screen
+	if auto_despawn and position.x > despawn_distance:
+		queue_free()

@@ -1,14 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://cr6mk1qfj240d"]
+[gd_scene load_steps=7 format=3 uid="uid://cr6mk1qfj240d"]
 
 [ext_resource type="Script" uid="uid://dsdsko4y5jhgv" path="res://SkyHoop/SkyHoop.gd" id="1_caurf"]
 [ext_resource type="Texture2D" uid="uid://c6hi5jbryv1ae" path="res://assets/seagull.png" id="2_rsg2b"]
 [ext_resource type="Texture2D" uid="uid://cqr0gkwhcxq0r" path="res://assets/seagull_crash.png" id="3_01aj5"]
+[ext_resource type="Texture2D" uid="uid://b36ep25dtqrpt" path="res://assets/flap1.png" id="3_ly4yn"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ly4yn"]
 animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_rsg2b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ly4yn")
 }],
 "loop": true,
 "name": &"flap",
@@ -34,11 +38,13 @@ animsprite = NodePath("Sprite2D")
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_ly4yn")
-animation = &"hit"
+animation = &"flap"
+autoplay = "flap"
+frame_progress = 0.355799
 
-[node name="SkyDetector" type="Area2D" parent="."]
+[node name="SkyDetector" type="Area2D" parent="." groups=["seagull"]]
 collision_layer = 4
-collision_mask = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SkyDetector"]
 rotation = 1.5708
