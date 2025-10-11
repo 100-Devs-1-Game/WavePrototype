@@ -13,7 +13,7 @@ signal interacting()
 var input_vector := Vector2.ZERO
 var has_dived_this_air: bool = false
 
-var sprite : Sprite2D
+var sprite : AnimatedSprite2D
 var rotation_tween: Tween
 var target_rotation: float = 0.0
 var rotation_speed: float = 0.2  # Adjust for faster/slower rotation
@@ -50,6 +50,12 @@ func _ready() -> void:
 
 	sprite = vehicle.get_node("Sprite2D")
 
+func check_for_soar_anim_controller():
+	if vehicle.soaring:
+		sprite.play("flying")
+	else:
+		sprite.play("boat")
+		
 
 func _physics_process(delta: float) -> void:
 	if vehicle == null:
@@ -57,6 +63,8 @@ func _physics_process(delta: float) -> void:
 
 	# --- Input handling ---
 	input_vector = Vector2.ZERO
+	
+	check_for_soar_anim_controller()
 
 	if Input.is_action_pressed("move_left"):
 		input_vector.x -= 1
@@ -144,7 +152,7 @@ func splash_effect():
 func dash_effect():
 	pass		
 
-func smooth_rotate_to_target(sprite: Sprite2D):
+func smooth_rotate_to_target(sprite: AnimatedSprite2D):
 	# Kill existing tween if it exists
 	if rotation_tween:
 		rotation_tween.kill()

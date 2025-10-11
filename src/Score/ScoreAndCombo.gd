@@ -23,6 +23,7 @@ signal score_result(finalscore : int)
 
 
 func _ready() -> void:
+	game_finished = true
 	timer_coutner.game_finished.connect(Callable(self, "stop_scoring"))
 
 var highest_height : float = 0 #updated as you play the game

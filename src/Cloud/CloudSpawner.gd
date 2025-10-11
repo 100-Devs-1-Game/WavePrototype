@@ -8,7 +8,7 @@ extends Node
 @export var density: int = 50  # Number of seaweed instances to spawn
 @export var floor_height: float = 0.0  # Y position of the ocean floor
 @export var floor_range: Vector2 = Vector2(-1000, 4500)  # X range for spawning (min, max)
-@export var height_variation: float = 500.0  # Random height variation above floor
+@export var height_variation: float = 7500.0  # Random height variation above floor
 
 # Optional parameters for more control
 @export var spacing_variation: float = 0.3  # 0-1, how much spacing can vary

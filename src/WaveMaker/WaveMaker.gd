@@ -4,6 +4,8 @@ class_name WaveMaker
 @export var water: Water
 @export var game_mode : GameMode
 
+#this is meant to trigger more exciting water action. 
+#WORK ON IT
 func make_ocean_madness(count : int):
 	# Start wobble and noise on their own schedules
 	count *= 2
@@ -25,6 +27,8 @@ func _trigger_noise(count : int):
 		await get_tree().create_timer(randf_range(0.5, 1.0)).timeout
 		game_mode._on_noise_pressed()
 
+
+#spawns a wave every so often
 var counter : float = 5
 var time_tracker : float = 0
 func _process(delta: float) -> void:

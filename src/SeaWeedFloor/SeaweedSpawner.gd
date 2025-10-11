@@ -2,8 +2,6 @@ extends Node
 
 @export var seaweed : PackedScene = preload("res://SeaWeedFloor/sea_weed.tscn")
 
-
-
 # Spawning parameters
 @export var density: int = 50  # Number of seaweed instances to spawn
 @export var floor_height: float = 500.0  # Y position of the ocean floor

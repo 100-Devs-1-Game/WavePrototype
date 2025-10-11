@@ -1,5 +1,6 @@
 extends Node
 class_name Spawner
+#controls the starting boar, the bombs and the seagulls
 
 @export var debug : bool = false
 
@@ -54,7 +55,8 @@ func spawn_boat():
 	score_tracker.vehicle_controller = temp_vehicle.get_node("Controller")
 	bouncing_boat = temp_vehicle
 	
-
+ 
+#check Timer spawn_crate for when and why
 func spawn_crate(count : int):
 	# Calculate spawn amount based on wave progression
 	var spawn_amount = calculate_spawn_amount(count)
@@ -63,7 +65,7 @@ func spawn_crate(count : int):
 		var temp_crate = crate.instantiate()
 		temp_crate.water_path = water
 		game_mode.add_child(temp_crate)
-		temp_crate.global_position = Vector2(randf_range(10, 5000), -100)
+		temp_crate.global_position = Vector2(randf_range(10, 5000), -50)
 		temp_crate.get_node("BouncingArea").broken.connect(Callable(score_tracker, "update_score"))	
 		spawned_boxes.append(temp_crate)
 		
@@ -75,7 +77,7 @@ func kill_all_boxes():
 			await get_tree().create_timer(0.01).timeout
 	spawned_boxes.clear()
 		
-# Method 1: Smooth exponential curve (gradual then steep)
+# exponential curve
 func calculate_spawn_amount(wave_count: int) -> int:
 	var progress = float(wave_count) / float(total_waves)
 	progress = clamp(progress, 0.0, 1.0)
@@ -89,7 +91,7 @@ func calculate_spawn_amount(wave_count: int) -> int:
 func spawn_sky_hoop():
 	var temp_hoop = sky_hoop.instantiate()
 	game_mode.add_child(temp_hoop)
-	var p_to_spawn = float(randf_range(-100,-900))
+	var p_to_spawn = float(randf_range(-100,-9000))
 	temp_hoop.starting_y = p_to_spawn
 	temp_hoop.global_position = Vector2(-60, p_to_spawn) 
 	temp_hoop.broken.connect(Callable(score_tracker,"update_score"))

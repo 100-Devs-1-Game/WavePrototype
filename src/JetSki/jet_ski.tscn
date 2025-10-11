@@ -1,10 +1,38 @@
-[gd_scene load_steps=8 format=3 uid="uid://dpsx7j6o36mjs"]
+[gd_scene load_steps=12 format=3 uid="uid://dpsx7j6o36mjs"]
 
 [ext_resource type="Script" uid="uid://glesy3jy5qou" path="res://JetSki/JetSki2.gd" id="1_rxwpa"]
 [ext_resource type="Texture2D" uid="uid://ibpwd4rvl72n" path="res://assets/boat_flag.png" id="2_t5kxg"]
 [ext_resource type="Script" uid="uid://ckes1k3jqqslj" path="res://JetSki/JetSkiContoller.gd" id="3_408b3"]
+[ext_resource type="Texture2D" uid="uid://c7l4m3qjxnyu" path="res://assets/boat_propeller1.png" id="3_bp1rh"]
 [ext_resource type="Script" uid="uid://dp168hiipfxy3" path="res://JetSki/player_bounce.gd" id="4_c0wh0"]
+[ext_resource type="Texture2D" uid="uid://5w50pioxrkua" path="res://assets/boat_propeller2.png" id="4_waf43"]
+[ext_resource type="Texture2D" uid="uid://c12x2jvy5ec5b" path="res://assets/boat_propeller3.png" id="5_me1rk"]
 [ext_resource type="Script" uid="uid://dav8h534u8npy" path="res://Game/keep_in_bounds.gd" id="5_t5kxg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4fi8r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_t5kxg")
+}],
+"loop": true,
+"name": &"boat",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.1,
+"texture": ExtResource("3_bp1rh")
+}, {
+"duration": 0.1,
+"texture": ExtResource("4_waf43")
+}, {
+"duration": 0.1,
+"texture": ExtResource("5_me1rk")
+}],
+"loop": true,
+"name": &"flying",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p08pw"]
 radius = 89.0
@@ -22,10 +50,12 @@ debug_label = NodePath("DebugLabel")
 debug_label2 = NodePath("DebugLabel2")
 gravity = 1500.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -1
 position = Vector2(-4, -111)
-texture = ExtResource("2_t5kxg")
+sprite_frames = SubResource("SpriteFrames_4fi8r")
+animation = &"boat"
+frame_progress = 0.646556
 offset = Vector2(0, -25)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

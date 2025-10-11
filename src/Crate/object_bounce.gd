@@ -30,7 +30,7 @@ func _on_area_entered(area: Area2D) -> void:
 			get_tree().current_scene.add_child(explosion)
 			broken.emit(points)
 			velocity_holder.queue_free()
-			print("THIS IS THE SEAGUL")
+			#print("THIS IS THE SEAGUL")
 		
 		return
 

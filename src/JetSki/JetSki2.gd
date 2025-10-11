@@ -74,6 +74,7 @@ func _physics_process(delta: float) -> void:
 	if soaring and submerged_depth >= 0.0: # only affect gravity when in air
 		applied_grav *= soar_gravity_scale
 		velocity.y -= soar_lift_force * delta  # <--- upward push
+		
 		# counteract downward velocity more if falling fast
 		#var lift = min(soar_lift_force, abs(velocity.y) * 0.5)
 		#velocity.y -= lift * delta

@@ -1,12 +1,7 @@
 extends Node
-# ----------------------
-# Alternative: Use vertex colors for gradient (more reliable)
-# ----------------------extends Node2D
 class_name Water
 
-# ----------------------
 # Tunable parameters
-# ----------------------
 @export var width: float = 5024.0      # total width of water surface
 @export var samples: int = 500         # number of points in the surface (>= 2)
 @export var base_y: float = 400.0      # calm water level
@@ -24,16 +19,13 @@ class_name Water
 @export var surface_line_width: float = 2.0
 @export var surface_line_color: Color = Color(0.8, 0.9, 1.0, 1.0)  # bright water surface
 
-# sine waves for base motion  
-# make into a Saw?
+# sine waves for base motion  wow
 var sines := [
 	{"A": 8.0,  "k": 0.004, "omega": 1.5, "phase": 0.0},
 	{"A": 3.5,  "k": 0.020, "omega": 3.8, "phase": 1.0},
 ]
 
-# ----------------------
 # Internal state
-# ----------------------
 var dx: float
 var positions_x: Array = []
 var displacements: Array = []
@@ -44,9 +36,7 @@ var elapsed_time: float = 0.0
 var water_polygon: Polygon2D
 var surface_line: Line2D
 
-# ----------------------
 # Setup
-# ----------------------
 func _ready() -> void:
 	if samples < 2:
 		samples = 2   # safety
@@ -68,9 +58,7 @@ func _ready() -> void:
 	_setup_surface_line()
 	set_surface_line_width(surface_line_width)
 
-# ----------------------
 # Setup water polygon for gradient fill
-# ----------------------
 func _setup_water_polygon() -> void:
 	water_polygon = Polygon2D.new()
 	add_child(water_polygon)
@@ -97,12 +85,8 @@ func _setup_water_polygon() -> void:
 	
 	water_polygon.texture = gradient_texture
 	
-	# Alternative: Use vertex colors instead of texture
-	_use_vertex_colors()
 
-# ----------------------
 # Update
-# ----------------------
 func _process(delta: float) -> void:
 	elapsed_time += delta
 	_update_springs(delta)
@@ -110,9 +94,7 @@ func _process(delta: float) -> void:
 	_update_surface_line()
 	_update_traveling_waves(delta)
 
-# ----------------------
 # Setup surface line
-# ----------------------
 func _setup_surface_line() -> void:
 	if not show_surface_line:
 		return
@@ -124,9 +106,7 @@ func _setup_surface_line() -> void:
 	surface_line.end_cap_mode = Line2D.LINE_CAP_ROUND
 	add_child(surface_line)
 
-# ----------------------
 # Update surface line
-# ----------------------
 func _update_surface_line() -> void:
 	if not show_surface_line or not surface_line:
 		return
@@ -180,9 +160,7 @@ func _update_water_polygon() -> void:
 	water_polygon.polygon = points
 	water_polygon.vertex_colors = colors
 
-# ----------------------
 # Update texture coordinates for proper gradient mapping
-# ----------------------
 func _update_texture_coordinates() -> void:
 	if not water_polygon:
 		return
@@ -208,9 +186,7 @@ func _update_texture_coordinates() -> void:
 	
 	water_polygon.uv = uvs
 
-# ----------------------
 # Wave Simulation
-# ----------------------
 func _update_springs(delta: float) -> void:
 	for i in range(samples):
 		var base = _analytic_base_height(positions_x[i], elapsed_time)
@@ -226,18 +202,14 @@ func _update_springs(delta: float) -> void:
 	for i in range(samples):
 		displacements[i] += velocities[i] * delta
 
-# ----------------------
 # Base Wave Function
-# ----------------------
 func _analytic_base_height(x: float, t: float) -> float:
 	var sum := 0.0
 	for s in sines:
 		sum += s["A"] * sin(s["k"] * x - s["omega"] * t + s["phase"])
 	return base_y + sum
 
-# ----------------------
 # Sampling Functions
-# ----------------------
 func get_height(world_x: float) -> float:
 	var local_x = clamp(world_x, 0.0, width)
 	var f = local_x / dx
