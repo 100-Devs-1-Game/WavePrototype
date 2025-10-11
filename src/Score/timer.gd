@@ -27,7 +27,9 @@ signal new_gull
 	"KILL SEAGULLS!",
 	"SMASH BUOYS!",
 	"BUILD COMBOS!",
-	"GET POINTS!"
+	"GET HIGH!",
+	"GET POINTS!",
+	"GO!"
 ]
 @export var intro_message_duration : float = 0.8
 
@@ -57,6 +59,7 @@ func start_intro_sequence():
 		await tween_in.finished
 		
 		# Hold message
+		SfxPlayer.play_sound(0)
 		await get_tree().create_timer(intro_message_duration).timeout
 		
 		# Animate message out
@@ -73,6 +76,7 @@ func start_intro_sequence():
 	get_parent().game_finished = false #this prevents scoring
 	time_has_started = true
 	increment_counter = 0.0
+	SfxPlayer.play_sound(1)
 
 func spawn_boxes():
 	new_box_spawn_wave.emit(box_spawn_wave_count)

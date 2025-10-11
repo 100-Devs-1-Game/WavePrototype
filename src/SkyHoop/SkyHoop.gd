@@ -1,5 +1,7 @@
 extends Node2D
 
+var particle : PackedScene = preload("res://SkyHoop/seagull_smash_particle.tscn")
+
 signal broken(point_value : int)
 @export var life : int = 1
 @export var points : int = 100
@@ -46,9 +48,17 @@ func _on_sky_detector_area_entered(area: Area2D) -> void:
 	if is_hit:
 		return  # Prevent multiple hits
 	
+	#SfxPlayer.play_sound_varied(0, 0.2,0.1)
+	SfxPlayer.play_sound_varied(2, 0.2,0.1)
+
+
 	is_hit = true
 	broken.emit(points)
 	animsprite.play("hit")
+		
+	var hit_particle = particle.instantiate()
+	hit_particle.global_position = global_position
+	get_tree().current_scene.add_child(hit_particle)
 	
 	await squish_and_break()
 	queue_free()

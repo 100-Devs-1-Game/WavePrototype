@@ -10,4 +10,5 @@ func _ready():
 	bouncing.connect(Callable(controller, "reset_dive"))
 
 func bounce():
+	SfxPlayer.play_sound_varied(0, 0.2,0.1)
 	bouncing.emit()

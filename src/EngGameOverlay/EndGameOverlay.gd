@@ -67,11 +67,11 @@ func show_game_over_overlay(new_score: bool, new_height: bool, any_record: bool)
 	if any_record:
 		result_label.text = "🎉 AMAZING! 🎉"
 		result_label.modulate = Color.GOLD
-		message_label.text = "You're on fire! Can you beat this record?"
+		message_label.text = "A NEW RECORD!"
 	else:
 		result_label.text = "TIME'S UP!"
 		result_label.modulate = Color.WHITE
-		message_label.text = "So close! Try one more time!"
+		message_label.text = "Nope! Try again!"
 	
 	# Animate header
 	animate_result_label()
@@ -153,8 +153,8 @@ func save_records():
 	var save_file = FileAccess.open("user://highscores.save", FileAccess.WRITE)
 	if save_file:
 		var save_data = {
-			"highest_score": highest_score_record,
-			"highest_height": highest_height_record
+			"highest_score": int(highest_score_record),
+			"highest_height": int(highest_height_record)
 		}
 		save_file.store_string(JSON.stringify(save_data))
 		save_file.close()

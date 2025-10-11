@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnxb1amjb2hxh"]
+
+[ext_resource type="Script" uid="uid://mn1warcs8yq3" path="res://Splash/splashemittercontroller.gd" id="1_bl03i"]
+[ext_resource type="Texture2D" uid="uid://dgqf5wx0xjvo" path="res://assets/splash.png" id="2_8327b"]
+
+[node name="SplashNode" type="Node2D"]
+script = ExtResource("1_bl03i")
+
+[node name="Front" type="CPUParticles2D" parent="."]
+z_index = 2
+emitting = false
+amount = 6
+texture = ExtResource("2_8327b")
+one_shot = true
+explosiveness = 1.0
+randomness = 0.34
+emission_shape = 1
+emission_sphere_radius = 10.0
+direction = Vector2(0, -1)
+spread = 75.0
+gravity = Vector2(0, 200)
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+scale_amount_min = 0.25
+scale_amount_max = 0.5
+color = Color(0.913725, 0, 0.0745098, 1)
+
+[node name="Back" type="CPUParticles2D" parent="."]
+modulate = Color(0.881874, 0.292884, 0.333895, 1)
+z_index = -2
+emitting = false
+amount = 6
+texture = ExtResource("2_8327b")
+one_shot = true
+explosiveness = 1.0
+randomness = 0.34
+emission_shape = 1
+emission_sphere_radius = 10.0
+direction = Vector2(0, -1)
+spread = 75.0
+gravity = Vector2(0, 200)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+scale_amount_min = 0.1
+scale_amount_max = 0.25

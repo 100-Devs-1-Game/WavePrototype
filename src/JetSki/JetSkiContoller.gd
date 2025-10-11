@@ -50,12 +50,26 @@ func _ready() -> void:
 
 	sprite = vehicle.get_node("Sprite2D")
 
+
+
+
+
+var music_player = SfxPlayer.play_sound_looped(2)
 func check_for_soar_anim_controller():
 	if vehicle.soaring:
 		sprite.play("flying")
+		if music_player:
+			return
+		music_player = SfxPlayer.play_sound_looped(5)
+		
 	else:
 		sprite.play("boat")
+		if music_player:
+			music_player.stop()
+			music_player.queue_free()	
 		
+
+
 
 func _physics_process(delta: float) -> void:
 	if vehicle == null:
@@ -150,7 +164,7 @@ func splash_effect():
 		get_tree().current_scene.add_child(splash)
 		
 func dash_effect():
-	pass		
+	SfxPlayer.play_sound_varied(6,0.3,0.2)
 
 func smooth_rotate_to_target(sprite: AnimatedSprite2D):
 	# Kill existing tween if it exists
