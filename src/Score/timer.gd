@@ -24,11 +24,8 @@ signal game_finished #where is this connected? in the spawner at least and score
 signal new_gull
 # Intro messages
 @export var intro_messages : Array[String] = [
-	"KILL SEAGULLS!",
-	"SMASH BUOYS!",
-	"BUILD COMBOS!",
-	"GET HIGH!",
-	"GET POINTS!",
+	"GET POINTS",
+	"READY?",
 	"GO!"
 ]
 @export var intro_message_duration : float = 0.8
@@ -59,7 +56,7 @@ func start_intro_sequence():
 		await tween_in.finished
 		
 		# Hold message
-		SfxPlayer.play_sound(0)
+		SfxPlayer.play_sound(7)
 		await get_tree().create_timer(intro_message_duration).timeout
 		
 		# Animate message out

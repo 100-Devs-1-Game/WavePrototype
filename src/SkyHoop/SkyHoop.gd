@@ -20,6 +20,7 @@ var is_hit : bool = false
 
 func _ready() -> void:
 	animsprite.play("flap")
+	animsprite.speed_scale = randf_range(0.9,1.1)
 	
 	# Optional: Random speed variation for each seagull
 	speed += randf_range(-20, 20)

@@ -4,12 +4,13 @@ extends Node
 # Array of sound file paths
 @export var sound_files: Array[String] = [
 	"res://sounds/splashsound.wav",
-	"res://sounds/main_song.wav",
+	"res://sounds/sillysong2.wav",
 	"res://sounds/seagulhurt.wav",
 	"res://sounds/seagulloceanwaveloop.wav",
 	"res://sounds/bomexplosion.wav",
-	"res://sounds/heliloop.wav",
-	"res://sounds/swoosh.wav"
+	"res://sounds/heliloopEQ.wav",
+	"res://sounds/swoosh.wav",
+	"res://sounds/bloopintromessagesound.wav"
 ]
 
 
