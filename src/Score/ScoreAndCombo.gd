@@ -275,7 +275,6 @@ func animate_combo_score():
 	# Extra sparkle for combo scores
 	var tween = create_tween()
 	tween.set_parallel(true)
-	
 	# Rotation wiggle
 	tween.tween_property(score_label, "rotation", deg_to_rad(5), 0.05)
 	tween.tween_property(score_label, "rotation", deg_to_rad(-5), 0.05)
@@ -362,6 +361,7 @@ func animate_confetti():
 		return
 	var tween = create_tween()
 	tween.set_parallel(true)
+	#SfxPlayer.play_sound(7)
 	
 	# Reset state
 	combo_confetti_label.scale = Vector2.ZERO

@@ -73,7 +73,8 @@ func start_intro_sequence():
 	get_parent().game_finished = false #this prevents scoring
 	time_has_started = true
 	increment_counter = 0.0
-	SfxPlayer.play_sound(1)
+	#starts the song
+	#SfxPlayer.play_sound(1)
 
 func spawn_boxes():
 	new_box_spawn_wave.emit(box_spawn_wave_count)
@@ -140,6 +141,7 @@ func execute_current_event():
 
 func handle_oppwave():
 	show_event_effect("WAVE!", Color.CYAN)
+	SfxPlayer.play_sound(7)
 	print("EVENT: Opposite Wave!")
 	# Add your opposite wave logic here
 
@@ -148,12 +150,14 @@ func handle_oppwave():
 #just these 2....
 func handle_spawn_boxes():
 	new_box_spawn_wave.emit(box_spawn_wave_count)
+	SfxPlayer.play_sound(7)
 	show_event_effect("Buoys Spawned", Color.GOLD)
 	print("EVENT: Spawn Boxes!")
 	# Add your box spawning logic here
 
 func handle_om1():
 	show_event_effect("MADDNESS", Color.GOLD)
+	SfxPlayer.play_sound(7)
 	GameManagerDoWaterEvent.emit()
 	print("EVENT: Ocean Madness 1!")
 #>>>>>>>>>>>>>>>>>>>>>>
@@ -177,6 +181,7 @@ func get_current_event_name() -> String:
 func show_event_countdown():
 	excitement_label.text = get_current_event_name() + " INCOMING!"
 	animate_excitement_text(Color.ORANGE, 1)
+	SfxPlayer.play_sound(7)
 	await get_tree().create_timer(2).timeout
 	
 	# Countdown 3, 2, 1
@@ -185,7 +190,7 @@ func show_event_countdown():
 		
 		var color = Color.YELLOW if i < 2 else Color.RED
 		animate_excitement_text(color, 1)
-		
+		SfxPlayer.play_sound(7)
 		await get_tree().create_timer(1.5).timeout
 	
 	execute_current_event()
