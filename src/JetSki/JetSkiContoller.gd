@@ -80,10 +80,10 @@ func _physics_process(delta: float) -> void:
 	
 	check_for_soar_anim_controller()
 
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left") or Input.is_action_pressed("ui_left"):
 		input_vector.x -= 1
 		target_rotation = -10
-	elif Input.is_action_pressed("move_right"):
+	elif Input.is_action_pressed("move_right") or Input.is_action_pressed("ui_right"):
 		input_vector.x += 1
 		target_rotation = 10
 	else:
@@ -92,7 +92,7 @@ func _physics_process(delta: float) -> void:
 	smooth_rotate_to_target(sprite)	
 		
 	# Soaring
-	vehicle.soaring = Input.is_action_pressed("hover") and vehicle.was_above_water		
+	vehicle.soaring = (Input.is_action_pressed("hover") or Input.is_action_pressed("ui_up")) and vehicle.was_above_water		
 		
 	#if Input.is_action_pressed("move_up"):
 		#input_vector.y -= 1
@@ -115,7 +115,7 @@ func _physics_process(delta: float) -> void:
 	vehicle.velocity.x = clamp(vehicle.velocity.x, -max_speed, max_speed)
 
 	# --- Dive impulse ---
-	if Input.is_action_just_pressed("move_down")  and not has_dived_this_air: #and vehicle.was_above_water
+	if (Input.is_action_just_pressed("move_down") or Input.is_action_just_pressed("ui_down")) and not has_dived_this_air: #and vehicle.was_above_water
 		vehicle.velocity.y += dive_impulse
 		has_dived_this_air = true
 		#squish and pull the sprite.
@@ -184,10 +184,10 @@ func _physics_process_lerp_version(delta: float) -> void:
 	
 	# --- Input handling ---
 	input_vector = Vector2.ZERO
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left") or Input.is_action_pressed("ui_left"):
 		input_vector.x -= 1
 		target_rotation = -10
-	elif Input.is_action_pressed("move_right"):
+	elif Input.is_action_pressed("move_right") or Input.is_action_pressed("ui_right"):
 		input_vector.x += 1
 		target_rotation = 10
 	else:

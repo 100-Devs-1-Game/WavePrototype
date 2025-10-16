@@ -3,7 +3,7 @@ extends Sprite2D
 func _ready() -> void:
 	# Create a Tween node
 	var tween := create_tween()
-	SfxPlayer.play_sound_varied(4, 0.3, 0.1)
+	SfxPlayer.play_sound_varied_2D(4, 0.3, 0.1, global_position)
 
 	scale = Vector2(0.1, 0.1)
 	tween.tween_property(self, "scale", Vector2(1, 1), 0.3) \

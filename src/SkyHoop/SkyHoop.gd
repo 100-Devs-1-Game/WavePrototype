@@ -50,7 +50,7 @@ func _on_sky_detector_area_entered(area: Area2D) -> void:
 		return  # Prevent multiple hits
 	
 	#SfxPlayer.play_sound_varied(0, 0.2,0.1)
-	SfxPlayer.play_sound_varied(2, 0.2,0.1)
+	SfxPlayer.play_sound_varied_2D(2, 0.2,0.1, global_position)
 
 
 	is_hit = true

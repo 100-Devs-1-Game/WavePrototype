@@ -49,6 +49,28 @@ func play_sound_varied(index: int, pitch_variation: float = 0.2, volume_variatio
 	audio_player.play()
 	audio_player.finished.connect(audio_player.queue_free)
 
+
+# Play a specific sound by index with variation
+func play_sound_varied_2D(index: int, pitch_variation: float = 0.2, volume_variation: float = 3.0, pos : Vector2 = Vector2.ZERO):
+	if index < 0 or index >= sound_files.size():
+		push_warning("Sound index out of range: " + str(index))
+		return
+	
+	var audio_player = AudioStreamPlayer2D.new()
+	audio_player.stream = load(sound_files[index])
+	audio_player.global_position = pos
+	# Add pitch variation (e.g., 0.2 = ±20% pitch change)
+	audio_player.pitch_scale = randf_range(1.0 - pitch_variation, 1.0 + pitch_variation)
+	
+	# Add volume variation in decibels (e.g., 3.0 = ±3dB)
+	audio_player.volume_db = randf_range(-volume_variation, volume_variation)
+	
+	add_child(audio_player)
+	audio_player.play()
+	audio_player.finished.connect(audio_player.queue_free)
+
+
+
 # Play a looped sound by index (returns the audio player so you can stop it later)
 func play_sound_looped(index: int) -> AudioStreamPlayer:
 	if index < 0 or index >= sound_files.size():

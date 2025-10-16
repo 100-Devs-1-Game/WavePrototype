@@ -20,13 +20,13 @@ func _physics_process(delta: float) -> void:
 func handle_input(delta: float) -> void:
 	var input_vector := Vector2.ZERO
 
-	if Input.is_action_pressed("move_right"):
+	if Input.is_action_pressed("move_right") or Input.is_action_pressed("ui_right"):
 		input_vector.x += 1
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left") or Input.is_action_pressed("ui_left"):
 		input_vector.x -= 1
-	if Input.is_action_pressed("move_down"):
+	if Input.is_action_pressed("move_down") or Input.is_action_pressed("ui_down"):
 		input_vector.y += 1
-	if Input.is_action_pressed("move_up"):
+	if Input.is_action_pressed("move_up") or Input.is_action_pressed("ui_up"):
 		input_vector.y -= 1
 
 	# Normalize for diagonal movement

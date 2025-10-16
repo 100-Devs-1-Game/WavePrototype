@@ -31,7 +31,7 @@ var current_score : int = 0 #updated as you play the game
 
 func stop_scoring():
 	game_finished = true
-	endgame_overlay.highest_height = highest_height 
+#	endgame_overlay.highest_height = highest_height 
 	endgame_overlay.current_score = current_score
 	endgame_overlay.game_finished = game_finished
 
@@ -52,7 +52,7 @@ func update_score(points_to_add : int):
 	if game_finished:
 		return
 	var current_height = abs(vehicle.global_position.y)
-	height_label.text = str(current_height)
+#	height_label.text = str(current_height)
 	var final_points = points_to_add
 	
 	if combo_tracker_score > 0:

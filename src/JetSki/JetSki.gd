@@ -47,9 +47,9 @@ func handle_input(delta):
 		global_position = Vector2(150, 0)
 	
 	# Forward/Backward movement
-	if Input.is_action_pressed("move_right"):
+	if Input.is_action_pressed("move_right") or Input.is_action_pressed("ui_left"):
 		input_vector.x += 1
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
 		input_vector.x -= 1
 	
 	# Dive input

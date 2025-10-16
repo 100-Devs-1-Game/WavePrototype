@@ -5,7 +5,7 @@ extends Node2D
 @onready var back : CPUParticles2D = $Back
 
 func _ready() -> void:
-	SfxPlayer.play_sound_varied(0, 0.3, 0.1)
+	SfxPlayer.play_sound_varied_2D(0, 0.3, 0.1, global_position)
 
 	front.emitting = true
 	back.emitting = true

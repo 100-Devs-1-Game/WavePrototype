@@ -7,3 +7,7 @@ func _physics_process(delta: float) -> void:
 	elif body_parent.global_position.x > 5000:
 		body_parent.global_position.x = 5000
 		
+	if body_parent.global_position.y < -15000:
+		body_parent.velocity = Vector2.ZERO
+		body_parent.global_position.y = -15000
+		

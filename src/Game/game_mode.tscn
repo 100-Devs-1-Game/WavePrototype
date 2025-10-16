@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b1e61prvvbfsu"]
+[gd_scene load_steps=23 format=3 uid="uid://b1e61prvvbfsu"]
 
 [ext_resource type="PackedScene" uid="uid://bemjkyfmkelmd" path="res://Ocean/ocean.tscn" id="1_4w06o"]
 [ext_resource type="Script" uid="uid://l7dp4wo806mh" path="res://Game/game_mode.gd" id="1_34rqk"]
@@ -71,6 +71,15 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="Gradient" id="Gradient_76amw"]
+offsets = PackedFloat32Array(0.278027, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.564706, 0.933333, 0.937255, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j2b74"]
+gradient = SubResource("Gradient_76amw")
+width = 1000
+height = 1000
 
 [node name="GameMode" type="Node" node_paths=PackedStringArray("spawner", "score", "timer_tracker", "wave_maker", "end_game_overlay", "water")]
 script = ExtResource("1_34rqk")
@@ -199,27 +208,51 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Height" type="Label" parent="ScoreAndCombo"]
-anchors_preset = 12
+anchors_preset = -1
+anchor_left = 0.177
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.177
 anchor_bottom = 1.0
 offset_top = -83.0
-grow_horizontal = 2
+offset_right = 220.0
 grow_vertical = 0
 theme = ExtResource("8_i4xgj")
+text = "??"
 horizontal_alignment = 1
 
+[node name="Label" type="Label" parent="ScoreAndCombo/Height"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.875
+anchor_right = 1.0
+offset_right = 168.0
+offset_bottom = 83.0
+theme = ExtResource("8_i4xgj")
+text = "Height:"
+
 [node name="Highest_Height" type="Label" parent="ScoreAndCombo"]
-anchors_preset = 12
+anchors_preset = -1
+anchor_left = 0.137
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -178.0
-offset_bottom = -95.0
-grow_horizontal = 2
+offset_left = -220.0
+offset_top = -83.0
+grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("8_i4xgj")
+text = "??"
 horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="ScoreAndCombo/Highest_Height"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.315
+anchor_right = 0.35
+offset_right = 40.0
+offset_bottom = 83.0
+theme = ExtResource("8_i4xgj")
+text = "Highest: "
 
 [node name="Timer" type="Label" parent="ScoreAndCombo" node_paths=PackedStringArray("excitement_label")]
 visible = false
@@ -275,8 +308,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_76amw")
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 1.0
-offset_bottom = 84.0
+offset_bottom = 83.0
 grow_horizontal = 2
 theme = ExtResource("8_i4xgj")
 text = "results"
@@ -361,6 +393,7 @@ theme = ExtResource("8_i4xgj")
 text = "Your Score"
 
 [node name="HeightPanel" type="Panel" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay"]
+visible = false
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 1
 anchors_preset = 14
@@ -440,14 +473,17 @@ text = "Your Height"
 
 [node name="MessageLabel" type="Label" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay"]
 layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -142.0
-offset_bottom = -59.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -107.5
+offset_top = -41.5
+offset_right = 107.5
+offset_bottom = 41.5
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 theme = ExtResource("8_i4xgj")
 text = "good job"
 horizontal_alignment = 1
@@ -455,15 +491,11 @@ horizontal_alignment = 1
 [node name="PlayAgainButton" type="Button" parent="ScoreAndCombo/EndgameOverlay/GameOverOverlay"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 12
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -50.0
-offset_top = -55.0
-offset_right = 50.0
-offset_bottom = -5.0
+offset_top = -37.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("4_p3h2i")
@@ -495,6 +527,15 @@ texture = ExtResource("8_mk7db")
 script = ExtResource("12_lhric")
 floor_height = -300.0
 spacing_variation = 0.8
+
+[node name="SkyGradient" type="TextureRect" parent="."]
+z_index = -22
+offset_left = 11527.0
+offset_top = -17990.0
+offset_right = 27036.0
+offset_bottom = -6242.0
+rotation = 1.5708
+texture = SubResource("GradientTexture2D_j2b74")
 
 [connection signal="pressed" from="DebugControl/HBoxContainer/waveLeft" to="." method="_on_wave_left_pressed"]
 [connection signal="pressed" from="DebugControl/HBoxContainer/waveRight" to="." method="_on_wave_right_pressed"]

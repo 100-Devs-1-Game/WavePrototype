@@ -2,8 +2,8 @@ extends Control
 class_name EndGameOverlay
 
 var highest_score_record : float = 0
-var highest_height_record : float = 0
-var highest_height : float = 0  # Updated as you play the game
+#var highest_height_record : float = 0
+#var highest_height : float = 0  # Updated as you play the game
 var current_score : int = 0  # Updated as you play the game
 var game_finished : bool = false
 
@@ -41,31 +41,31 @@ func stop_scoring():
 	
 	# Check for new records
 	var new_score_record = current_score > highest_score_record
-	var new_height_record = highest_height > highest_height_record
-	var any_new_record = new_score_record or new_height_record
+	#var new_height_record = highest_height > highest_height_record
+	var any_new_record = new_score_record #or new_height_record
 	
 	# Update records if beaten
 	if new_score_record:
 		highest_score_record = current_score
 		celebrate_new_record("score")
 	
-	if new_height_record:
-		highest_height_record = highest_height
-		celebrate_new_record("height")
+	#if new_height_record:
+		#highest_height_record = highest_height
+		#celebrate_new_record("height")
 	
 	# Save new records
 	save_records()
 	
 	# Show overlay with results
-	show_game_over_overlay(new_score_record, new_height_record, any_new_record)
+	show_game_over_overlay(new_score_record, any_new_record) #removed height
 
-func show_game_over_overlay(new_score: bool, new_height: bool, any_record: bool):
+func show_game_over_overlay(new_score: bool, any_record: bool):
 	# Show overlay
 	overlay.visible = true
 	
 	# Set header message
 	if any_record:
-		result_label.text = "🎉 AMAZING! 🎉"
+		result_label.text = "AMAZING!"
 		result_label.modulate = Color.GOLD
 		message_label.text = "A NEW RECORD!"
 	else:
@@ -87,16 +87,16 @@ func show_game_over_overlay(new_score: bool, new_height: bool, any_record: bool)
 	else:
 		score_current_label.modulate = Color.WHITE
 	
-	# Set height values
-	height_current_label.text = str(int(highest_height)) + "m"
-	height_best_label.text = str(int(highest_height_record)) + "m"
-	height_new_badge.visible = new_height
-	
-	if new_height:
-		height_current_label.modulate = Color.GOLD
-		animate_badge(height_new_badge)
-	else:
-		height_current_label.modulate = Color.WHITE
+	## Set height values
+	#height_current_label.text = str(int(highest_height)) + "m"
+	#height_best_label.text = str(int(highest_height_record)) + "m"
+	#height_new_badge.visible = new_height
+	#
+	#if new_height:
+		#height_current_label.modulate = Color.GOLD
+		#animate_badge(height_new_badge)
+	#else:
+		#height_current_label.modulate = Color.WHITE
 	
 	# Animate overlay entrance
 	animate_overlay_entrance()
@@ -136,7 +136,7 @@ func celebrate_new_record(record_type: String):
 func _on_play_again():
 	# Reset game state
 	current_score = 0
-	highest_height = 0
+	#highest_height = 0
 	game_finished = false
 	
 	# Hide overlay
@@ -154,7 +154,7 @@ func save_records():
 	if save_file:
 		var save_data = {
 			"highest_score": int(highest_score_record),
-			"highest_height": int(highest_height_record)
+		#	"highest_height": int(highest_height_record)
 		}
 		save_file.store_string(JSON.stringify(save_data))
 		save_file.close()
@@ -171,20 +171,20 @@ func load_records():
 			if parse_result == OK:
 				var save_data = json.data
 				highest_score_record = save_data.get("highest_score", 0)
-				highest_height_record = save_data.get("highest_height", 0)
+				#highest_height_record = save_data.get("highest_height", 0)
 
 func display_text_on_start():
 	result_label.text = "Scoreboard"
 	score_current_label.text = str(0)
 	score_best_label.text = str(highest_score_record)
-	message_label.text = "Scoreboard"
+	message_label.text = "WASD or Arrows to move"
 	score_new_badge.text = ""
-	height_current_label.text = ""
-	height_best_label.text = str(highest_height_record)
-	height_new_badge.text = ""
+	#height_current_label.text = ""
+	#height_best_label.text = str(highest_height_record)
+	#height_new_badge.text = ""
 
 func get_high_score() -> int:
 	return int(highest_score_record)
-
-func get_high_height() -> int:
-	return int(highest_height_record)
+#
+#func get_high_height() -> int:
+	#return int(highest_height_record)
