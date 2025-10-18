@@ -50,15 +50,15 @@ func spawn_score_bottle():
 	var temp_vehicle = score_bottle.instantiate()
 	temp_vehicle.water_path = water
 	game_mode.add_child(temp_vehicle)
-	temp_vehicle.global_position = Vector2(500,0)
+	temp_vehicle.global_position = Vector2(2500,0)
 	temp_vehicle.reset_timer.connect(Callable(score_tracker, "reset_combo"))
-
+	score_tracker.current_score_signal.connect(Callable(temp_vehicle.get_node("Score"), "change_score"))
 
 func spawn_boat():
 	var temp_vehicle = vehicle.instantiate()
 	temp_vehicle.water_path = water
 	game_mode.add_child(temp_vehicle)
-	temp_vehicle.global_position = Vector2(1000,0)
+	temp_vehicle.global_position = Vector2(2500,0)
 	temp_vehicle.get_node("BounceArea").bouncing.connect(Callable(score_tracker, "update_combo"))
 	temp_vehicle.reset_timer.connect(Callable(score_tracker, "reset_combo"))
 	score_tracker.vehicle = temp_vehicle

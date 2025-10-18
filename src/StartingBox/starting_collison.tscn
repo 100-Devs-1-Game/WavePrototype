@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://6a8y1rnb3nlf" path="res://assets/start_gate_foreground.png" id="3_v53v4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ty21x"]
-size = Vector2(64, 192)
+size = Vector2(39, 1265)
 
 [node name="StartingCollison" type="Area2D"]
 z_index = -2
@@ -16,16 +16,17 @@ collision_mask = 2
 script = ExtResource("1_oi3d3")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(12.5, 158.5)
 shape = SubResource("RectangleShape2D_ty21x")
 
 [node name="Sprite2D3" type="Sprite2D" parent="."]
 z_index = -3
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ty21x")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 z_index = 3
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_v53v4")
 
 [node name="Label" type="Label" parent="."]

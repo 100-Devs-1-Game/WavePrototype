@@ -1,15 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://cb823j02bctq3"]
+[gd_scene load_steps=7 format=3 uid="uid://cb823j02bctq3"]
 
 [ext_resource type="Script" uid="uid://glesy3jy5qou" path="res://JetSki/JetSki2.gd" id="1_hg07r"]
 [ext_resource type="Texture2D" uid="uid://tyk6l7vmbb0h" path="res://assets/scoreboard.png" id="2_qmwuk"]
 [ext_resource type="Theme" uid="uid://durnxvl8gis2i" path="res://Game/labletheme.tres" id="3_hg07r"]
+[ext_resource type="Script" uid="uid://bk8u4q2kfqq6y" path="res://FloatingScoreboard/floatingSB.gd" id="3_psjvk"]
 [ext_resource type="Script" uid="uid://dav8h534u8npy" path="res://Game/keep_in_bounds.gd" id="4_48pxs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lptlp"]
 size = Vector2(8, 8)
 
 [node name="floating_sb" type="CharacterBody2D"]
-scale = Vector2(0.5, 0.5)
+collision_layer = 0
+collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_hg07r")
 gravity = 1500.0
@@ -17,18 +19,22 @@ gravity = 1500.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_lptlp")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = -1
+[node name="Score" type="Sprite2D" parent="."]
+z_index = -5
 position = Vector2(-34, 5)
-scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_qmwuk")
+script = ExtResource("3_psjvk")
 
-[node name="Label" type="Label" parent="Sprite2D"]
+[node name="Label" type="Label" parent="Score"]
 offset_left = -728.0
 offset_top = -187.0
 offset_right = 140.0
 offset_bottom = 307.0
 theme = ExtResource("3_hg07r")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 100
 text = "High Score: 50000
 Your Score: 23433"

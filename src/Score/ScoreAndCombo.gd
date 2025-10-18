@@ -21,7 +21,7 @@ var combo_tracker_score : int = 0
 
 var game_finished : bool = false
 signal score_result(finalscore : int) 
-
+signal current_score_signal(c_score : int)
 
 func _ready() -> void:
 	game_finished = true
@@ -48,6 +48,8 @@ func _process(delta: float) -> void:
 			
 		height_label.text = str(result)
 	
+		current_score_signal.emit(current_score) 
+		
 	
 func update_score(points_to_add : int):
 	if game_finished:

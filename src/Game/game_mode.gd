@@ -12,7 +12,7 @@ class_name GameMode
 func _ready() -> void:
 	#set up the starting box...
 	var temp_starter_box = starting_box.instantiate()
-	temp_starter_box.global_position = Vector2(500,-100)
+	temp_starter_box.global_position = Vector2(1000, 00)
 	temp_starter_box.start_round.connect(Callable(timer_tracker,"start_intro_sequence" ))
 	temp_starter_box.start_round.connect(Callable(end_game_overlay, ("hide_scoreboard")))
 	add_child(temp_starter_box)

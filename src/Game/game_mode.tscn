@@ -91,6 +91,7 @@ end_game_overlay = NodePath("ScoreAndCombo/EndgameOverlay")
 water = NodePath("Water")
 
 [node name="Water" parent="." instance=ExtResource("1_4w06o")]
+z_index = 9
 base_y = 0.0
 surface_line_width = 8.0
 surface_line_color = Color(1, 1, 1, 1)
