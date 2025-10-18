@@ -5,11 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://raapry5d24xd" path="res://assets/bomb.png" id="2_somao"]
 [ext_resource type="Script" uid="uid://dav8h534u8npy" path="res://Game/keep_in_bounds.gd" id="3_qse17"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lptlp"]
-size = Vector2(8, 8)
+[sub_resource type="CircleShape2D" id="CircleShape2D_fe4q6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_somao"]
-radius = 36.0139
+radius = 36.0555
 
 [node name="Crate" type="CharacterBody2D" node_paths=PackedStringArray("debug_label", "debug_label2")]
 scale = Vector2(0.5, 0.5)
@@ -20,7 +19,7 @@ debug_label2 = NodePath("DebugLabel2")
 gravity = 1500.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_lptlp")
+shape = SubResource("CircleShape2D_fe4q6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1

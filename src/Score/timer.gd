@@ -1,7 +1,7 @@
 extends Label
 class_name TimerForRound
 
-@export var increment : float = 5.0
+@export var increment : float = 6.0
 var increment_counter : float = 0.0
 @export var time : float = 60.0#also connected to the UMM spawner timer
 var time_has_started : bool = false

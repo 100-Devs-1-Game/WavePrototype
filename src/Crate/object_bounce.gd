@@ -51,7 +51,7 @@ func _on_area_entered(area: Area2D) -> void:
 		return
 	recent_collisions[id] = now
 
-	# --- Case 1: landed on top ---
+	# --- Case 1: player landed on top ---
 	if area.global_position.y < global_position.y - size_offset:
 		if area.has_method("bounce"):
 			area.bounce()
@@ -78,3 +78,7 @@ func _on_area_entered(area: Area2D) -> void:
 		velocity_holder.velocity = collision_velocity_holder.velocity * transfer_ratio
 		# let them keep some momentum so it feels natural
 		collision_velocity_holder.velocity *= 0.8
+	# --- Case 3: I land on top -- what do I want to happen?? ---
+	if area.global_position.y > global_position.y - size_offset:
+		velocity_holder.velocity = collision_velocity_holder.velocity * 1.1
+		collision_velocity_holder.velocity *= 0.9 

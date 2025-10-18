@@ -14,6 +14,7 @@ class_name Spawner
 @export var crate : PackedScene = preload("res://Crate/crate.tscn")
 @export var sky_hoop : PackedScene = preload("res://SkyHoop/sky_hoop.tscn")
 
+var score_bottle : PackedScene = preload("res://FloatingScoreboard/floating_sb.tscn")
 
 # Different spawn curve options
 @export var max_crates_per_wave : int = 50
@@ -30,6 +31,7 @@ func _ready() -> void:
 	timer_for_round.new_gull.connect(Callable(self,"spawn_gull"))
 	await get_tree().create_timer(0.4).timeout
 	spawn_starting_gulls()
+	spawn_score_bottle()
 	
 func spawn_starting_gulls():
 	for i in 50:
@@ -43,6 +45,14 @@ func spawn_starting_gulls():
 
 func spawn_gull():
 	pass
+
+func spawn_score_bottle():
+	var temp_vehicle = score_bottle.instantiate()
+	temp_vehicle.water_path = water
+	game_mode.add_child(temp_vehicle)
+	temp_vehicle.global_position = Vector2(500,0)
+	temp_vehicle.reset_timer.connect(Callable(score_tracker, "reset_combo"))
+
 
 func spawn_boat():
 	var temp_vehicle = vehicle.instantiate()

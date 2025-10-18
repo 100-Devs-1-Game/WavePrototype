@@ -109,7 +109,8 @@ func _physics_process(delta: float) -> void:
 	# --- Move the vehicle ---
 	move_and_slide()
 
-	debug_label.text = str(splash_bounce_count)
-	debug_label2.text = str(splash_reset_timer)
+	if debug_label and debug_label2:
+		debug_label.text = str(splash_bounce_count)
+		debug_label2.text = str(splash_reset_timer)
 	
 	

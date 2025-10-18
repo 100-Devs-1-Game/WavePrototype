@@ -1,6 +1,7 @@
 extends Node
 class_name ScoreTracker
 
+
 @export var vehicle_controller : VehicleController
 @export var vehicle : Vehicle
 @onready var score_label : Label = $Score

@@ -1,25 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://bx8v034eoyi2i"]
+[gd_scene load_steps=6 format=3 uid="uid://bx8v034eoyi2i"]
 
 [ext_resource type="Script" uid="uid://bo3mtwboy8qs6" path="res://StartingBox/StartingBox.gd" id="1_oi3d3"]
 [ext_resource type="Theme" uid="uid://durnxvl8gis2i" path="res://Game/labletheme.tres" id="2_gcdpk"]
+[ext_resource type="Texture2D" uid="uid://dtmakygu3l433" path="res://assets/start_gate_background.png" id="2_ty21x"]
+[ext_resource type="Texture2D" uid="uid://6a8y1rnb3nlf" path="res://assets/start_gate_foreground.png" id="3_v53v4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ty21x"]
 size = Vector2(64, 192)
-
-[sub_resource type="Gradient" id="Gradient_oi3d3"]
-colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0.988235)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_gcdpk"]
-gradient = SubResource("Gradient_oi3d3")
-width = 68
-height = 204
-
-[sub_resource type="Gradient" id="Gradient_ty21x"]
-colors = PackedColorArray(0.564706, 0.933333, 0.937255, 1, 0.564706, 0.933333, 0.937255, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_v53v4"]
-gradient = SubResource("Gradient_ty21x")
-height = 200
 
 [node name="StartingCollison" type="Area2D"]
 z_index = -2
@@ -32,12 +19,17 @@ script = ExtResource("1_oi3d3")
 shape = SubResource("RectangleShape2D_ty21x")
 
 [node name="Sprite2D3" type="Sprite2D" parent="."]
-texture = SubResource("GradientTexture2D_gcdpk")
+z_index = -3
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_ty21x")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
-texture = SubResource("GradientTexture2D_v53v4")
+z_index = 3
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_v53v4")
 
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = -69.0
 offset_top = -177.0
 offset_right = 69.0
