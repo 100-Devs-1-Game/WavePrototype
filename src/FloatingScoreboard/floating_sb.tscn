@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cb823j02bctq3"]
+[gd_scene load_steps=8 format=3 uid="uid://cb823j02bctq3"]
 
 [ext_resource type="Script" uid="uid://glesy3jy5qou" path="res://JetSki/JetSki2.gd" id="1_hg07r"]
 [ext_resource type="Texture2D" uid="uid://tyk6l7vmbb0h" path="res://assets/scoreboard.png" id="2_qmwuk"]
 [ext_resource type="Theme" uid="uid://durnxvl8gis2i" path="res://Game/labletheme.tres" id="3_hg07r"]
 [ext_resource type="Script" uid="uid://bk8u4q2kfqq6y" path="res://FloatingScoreboard/floatingSB.gd" id="3_psjvk"]
 [ext_resource type="Script" uid="uid://dav8h534u8npy" path="res://Game/keep_in_bounds.gd" id="4_48pxs"]
+[ext_resource type="Theme" uid="uid://dsriwp3xq62s8" path="res://Game/ButtonTheme.tres" id="5_587hn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lptlp"]
 size = Vector2(8, 8)
@@ -25,21 +26,56 @@ position = Vector2(-34, 5)
 texture = ExtResource("2_qmwuk")
 script = ExtResource("3_psjvk")
 
-[node name="Label" type="Label" parent="Score"]
-offset_left = -728.0
-offset_top = -187.0
-offset_right = 140.0
-offset_bottom = 307.0
+[node name="HighLabel" type="Label" parent="Score"]
+offset_left = -608.0
+offset_top = -275.0
+offset_right = 260.0
+offset_bottom = 219.0
 theme = ExtResource("3_hg07r")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 100
-text = "High Score: 50000
-Your Score: 23433"
+text = "344"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Label" type="Label" parent="Score/HighLabel"]
+layout_mode = 0
+offset_left = -30.0
+offset_top = 190.0
+offset_right = 294.0
+offset_bottom = 287.0
+theme = ExtResource("5_587hn")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 75
+text = "High Score:"
+
+[node name="CurrentLabel" type="Label" parent="Score"]
+offset_left = -215.0
+offset_top = 106.0
+offset_right = -59.0
+offset_bottom = 203.0
+theme = ExtResource("3_hg07r")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 75
+text = "3444"
+
+[node name="Label" type="Label" parent="Score/CurrentLabel"]
+layout_mode = 0
+offset_left = -375.0
+offset_top = -9.0
+offset_right = -52.0
+offset_bottom = 88.0
+theme = ExtResource("3_hg07r")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 75
+text = "Your Score:"
 
 [node name="BoundsRestraint" type="Node" parent="."]
 script = ExtResource("4_48pxs")

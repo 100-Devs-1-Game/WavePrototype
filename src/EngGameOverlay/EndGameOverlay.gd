@@ -6,6 +6,7 @@ var highest_score_record : float = 0
 #var highest_height : float = 0  # Updated as you play the game
 var current_score : int = 0  # Updated as you play the game
 var game_finished : bool = false
+signal loaded_score(high_score: int)
 
 # UI Node references - set these in the editor or _ready
 @onready var overlay = $GameOverOverlay
@@ -25,12 +26,13 @@ func _ready():
 	load_records()
 	
 	# Hide overlay initially
-	overlay.visible = true
+	overlay.visible = false
 	
 	# Connect buttons
 	play_again_button.pressed.connect(_on_play_again)
-	menu_button.pressed.connect(_on_return_to_menu)
+	menu_button.pressed.connect(quit_game)
 	display_text_on_start()
+	
 
 func hide_scoreboard():
 	visible=false
@@ -48,6 +50,7 @@ func stop_scoring():
 	if new_score_record:
 		highest_score_record = current_score
 		celebrate_new_record("score")
+		loaded_score.emit(highest_score_record)
 	
 	#if new_height_record:
 		#highest_height_record = highest_height
@@ -62,6 +65,7 @@ func stop_scoring():
 func show_game_over_overlay(new_score: bool, any_record: bool):
 	# Show overlay
 	overlay.visible = true
+	loaded_score.emit(highest_score_record)
 	
 	# Set header message
 	if any_record:
@@ -145,10 +149,9 @@ func _on_play_again():
 	# Restart the game scene
 	get_tree().reload_current_scene()
 
-func _on_return_to_menu():
-	# Go back to main menu
-	get_tree().change_scene_to_file("res://Game/game_mode.tscn")
-
+func quit_game():
+	get_tree().quit()
+	
 func save_records():
 	var save_file = FileAccess.open("user://highscores.save", FileAccess.WRITE)
 	if save_file:
@@ -179,10 +182,12 @@ func display_text_on_start():
 	score_best_label.text = str(highest_score_record)
 	message_label.text = "WASD or Arrows to move"
 	score_new_badge.text = ""
+	loaded_score.emit(highest_score_record)
+	
 	#height_current_label.text = ""
 	#height_best_label.text = str(highest_height_record)
 	#height_new_badge.text = ""
-
+	
 func get_high_score() -> int:
 	return int(highest_score_record)
 #

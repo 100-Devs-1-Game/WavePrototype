@@ -51,8 +51,12 @@ func spawn_score_bottle():
 	temp_vehicle.water_path = water
 	game_mode.add_child(temp_vehicle)
 	temp_vehicle.global_position = Vector2(2500,0)
-	temp_vehicle.reset_timer.connect(Callable(score_tracker, "reset_combo"))
+	#temp_vehicle.reset_timer.connect(Callable(score_tracker, "reset_combo"))
 	score_tracker.current_score_signal.connect(Callable(temp_vehicle.get_node("Score"), "change_score"))
+	game_mode.end_game_overlay.loaded_score.connect(Callable(temp_vehicle.get_node("Score"), "change_high_score"))
+	#lol
+	game_mode.end_game_overlay.loaded_score.emit(game_mode.end_game_overlay.highest_score_record)
+
 
 func spawn_boat():
 	var temp_vehicle = vehicle.instantiate()

@@ -22,6 +22,7 @@ var combo_tracker_score : int = 0
 var game_finished : bool = false
 signal score_result(finalscore : int) 
 signal current_score_signal(c_score : int)
+signal new_high_score(high_score : int)
 
 func _ready() -> void:
 	game_finished = true
@@ -324,6 +325,7 @@ func animate_combo_update():
 
 func reset_combo():
 	# Animate combo reset
+	
 	if combo_tracker_score > 0:
 		animate_combo_reset()
 	
